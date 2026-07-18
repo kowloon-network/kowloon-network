@@ -12,21 +12,22 @@ import splash from '../assets/splash.png';
     <a class="topbar-cta" href="#waitlist">Join the waitlist</a>
   </header>
 
+  <!-- Full-bleed hero illustration, right under the top bar -->
+  <figure class="splash">
+    <Image
+      src={splash}
+      widths={[720, 1280, 1672]}
+      sizes="100vw"
+      format="webp"
+      quality={78}
+      alt="Kowloon — a neon city of small, self-governed places"
+    />
+  </figure>
+
   <main>
     <section class="hero">
       <h1 class="wordmark">KOWLOON</h1>
       <p class="tagline">Circles, not followers.<br />No algorithm. Own your words.</p>
-
-      <figure class="splash">
-        <Image
-          src={splash}
-          widths={[720, 1120, 1400]}
-          sizes="(max-width: 1120px) 100vw, 1120px"
-          format="webp"
-          quality={78}
-          alt="Kowloon — a neon city of small, self-governed places"
-        />
-      </figure>
 
       <a class="cta" href="#waitlist">Join the waitlist &rarr;</a>
       <p class="soon">A new home for the open social web is on the way.</p>
@@ -83,7 +84,7 @@ import splash from '../assets/splash.png';
       top: 0;
       z-index: 10;
       backdrop-filter: blur(6px);
-      background: rgba(0, 47, 167, 0.72);
+      background: rgba(0, 0, 0, 0.72);
     }
     .brand {
       font-weight: 700;
@@ -129,14 +130,12 @@ import splash from '../assets/splash.png';
       opacity: 0.96;
     }
     .splash {
-      margin: clamp(2rem, 6vw, 3.5rem) 0 clamp(1.75rem, 5vw, 2.75rem);
+      margin: 0;
     }
     .splash img {
       display: block;
       width: 100%;
       height: auto;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
     }
     .soon {
       margin-top: 1.5rem;
