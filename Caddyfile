@@ -1,0 +1,7 @@
+# Serves the built static site with automatic HTTPS (Let's Encrypt).
+# The apex only for now; add www once its DNS record exists.
+kowloon.network {
+	encode zstd gzip
+	root * /srv
+	file_server
+}

@@ -1,0 +1,18 @@
+# Deploy on the kowloon.network box:
+#   docker compose pull && docker compose up -d
+# The image (Caddy + built site) is published by CI to GHCR on every push to main.
+services:
+  web:
+    image: ghcr.io/jzellis/kowloon-network:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
