@@ -1,58 +1,221 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+// Splash illustration — PLACEHOLDER art. Replace src/assets/splash.png with
+// Shan's final artwork; the optimizer handles the rest.
+import splash from '../assets/splash.png';
 ---
 
-<Base title="Kowloon — coming soon">
+<Base title="Kowloon — a social network built on circles, not followers">
+  <header class="topbar">
+    <span class="brand">KOWLOON</span>
+    <a class="topbar-cta" href="#waitlist">Join the waitlist</a>
+  </header>
+
   <main>
-    <img src="/kowloon-mark.png" alt="Kowloon" class="mark" width="160" height="160" />
-    <h1>KOWLOON</h1>
-    <p class="tagline">Circles, not followers. No algorithm. Own your words.</p>
-    <p class="soon">A new home for the open social web is on the way.</p>
-    <p class="waitlist">Waitlist &amp; docs coming soon</p>
+    <section class="hero">
+      <h1 class="wordmark">KOWLOON</h1>
+      <p class="tagline">Circles, not followers.<br />No algorithm. Own your words.</p>
+
+      <figure class="splash">
+        <Image
+          src={splash}
+          widths={[720, 1120, 1400]}
+          sizes="(max-width: 1120px) 100vw, 1120px"
+          format="webp"
+          quality={78}
+          alt="Kowloon — a neon city of small, self-governed places"
+        />
+      </figure>
+
+      <a class="cta" href="#waitlist">Join the waitlist &rarr;</a>
+      <p class="soon">A new home for the open social web is on the way.</p>
+    </section>
+
+    <section class="principles">
+      <article>
+        <span class="num">01</span>
+        <h2>Circles, not followers</h2>
+        <p>
+          You share with people you choose, not an audience you perform for.
+          Putting someone in a circle is the whole relationship &mdash; no
+          follower counts, no clout, no numbers to chase.
+        </p>
+      </article>
+      <article>
+        <span class="num">02</span>
+        <h2>No algorithm</h2>
+        <p>
+          Your feed is the people and communities you picked, newest first.
+          Nothing is ranked, boosted, or reordered by a machine that profits
+          from your attention.
+        </p>
+      </article>
+      <article>
+        <span class="num">03</span>
+        <h2>Own your words</h2>
+        <p>
+          Kowloon is open source and yours to run. Self-host it, keep your data,
+          and take everything with you. No lock-in, no landlord, no rug to pull.
+        </p>
+      </article>
+    </section>
+
+    <section class="waitlist" id="waitlist">
+      <h2>Kowloon opens soon.</h2>
+      <p>Be first through the gate. We'll email you when it's time.</p>
+      <!-- TODO: wire to Kit (ConvertKit) form -->
+      <a class="cta" href="#">Join the waitlist &rarr;</a>
+    </section>
   </main>
 
+  <footer>
+    <span>Kowloon &middot; open source &middot; {new Date().getFullYear()}</span>
+  </footer>
+
   <style>
-    main {
-      min-height: 100dvh;
+    .topbar {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      gap: 0.5rem;
+      justify-content: space-between;
+      padding: 1.25rem clamp(1.25rem, 5vw, 3rem);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(6px);
+      background: rgba(0, 47, 167, 0.72);
     }
-    .mark {
-      width: 160px;
-      height: 160px;
-      margin-bottom: 0.5rem;
-    }
-    h1 {
+    .brand {
       font-weight: 700;
-      letter-spacing: 0.28em;
-      /* nudge right to visually center the tracked text */
-      margin-left: 0.28em;
-      font-size: clamp(1.75rem, 6vw, 3rem);
+      letter-spacing: 0.24em;
+      font-size: 0.95rem;
+    }
+    .topbar-cta {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 0.5rem 0.9rem;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .topbar-cta:hover {
+      background: var(--paper);
+      color: var(--klein);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 5vw, 3rem);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: clamp(2.5rem, 7vw, 5rem) 0 clamp(3rem, 8vw, 6rem);
+    }
+    .wordmark {
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      margin-left: 0.3em;
+      font-size: clamp(2rem, 7vw, 3.75rem);
     }
     .tagline {
       font-family: 'Lora', Georgia, serif;
-      font-size: clamp(1.1rem, 3.6vw, 1.6rem);
-      line-height: 1.4;
-      max-width: 30ch;
+      font-size: clamp(1.2rem, 4vw, 1.9rem);
+      line-height: 1.35;
+      margin-top: 1rem;
       opacity: 0.96;
-      margin-top: 0.75rem;
+    }
+    .splash {
+      margin: clamp(2rem, 6vw, 3.5rem) 0 clamp(1.75rem, 5vw, 2.75rem);
+    }
+    .splash img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
     }
     .soon {
-      opacity: 0.78;
       margin-top: 1.5rem;
-      max-width: 34ch;
+      opacity: 0.72;
     }
-    .waitlist {
-      font-size: 0.72rem;
+
+    /* Shared CTA */
+    .cta {
+      display: inline-block;
+      text-decoration: none;
+      background: var(--paper);
+      color: var(--klein);
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
-      opacity: 0.55;
-      margin-top: 0.75rem;
+      letter-spacing: 0.16em;
+      font-size: 0.82rem;
+      padding: 0.9rem 1.6rem;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+
+    /* Principles */
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(1.5rem, 4vw, 3rem);
+      padding: clamp(2rem, 6vw, 4rem) 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .principles article .num {
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      opacity: 0.5;
+      letter-spacing: 0.1em;
+    }
+    .principles h2 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(1.25rem, 2.6vw, 1.5rem);
+      margin: 0.6rem 0 0.75rem;
+    }
+    .principles p {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      opacity: 0.85;
+    }
+    @media (max-width: 720px) {
+      .principles {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Waitlist */
+    .waitlist {
+      text-align: center;
+      padding: clamp(3rem, 9vw, 6rem) 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .waitlist h2 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+    }
+    .waitlist p {
+      margin: 0.75rem 0 1.75rem;
+      opacity: 0.82;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 1.25rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
   </style>
 </Base>
