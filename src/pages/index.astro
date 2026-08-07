@@ -29,6 +29,13 @@ import splash from '../assets/splash.png';
       <h1 class="wordmark">KOWLOON</h1>
       <p class="tagline">Circles, not followers.<br />No algorithm. Own your words.</p>
 
+      <p class="lede">
+        Kowloon is an open, federated social network built on one simple idea:
+        you decide who you hear from. Gather people and communities into circles,
+        read them newest-first with no algorithm in the way, and own every word
+        you post &mdash; no ads, no follower counts, no crowd to perform for.
+      </p>
+
       <a class="cta" href="#waitlist">Join the waitlist &rarr;</a>
       <p class="soon">A new home for the open social web is on the way.</p>
     </section>
@@ -60,6 +67,23 @@ import splash from '../assets/splash.png';
           and take everything with you. No lock-in, no landlord, no rug to pull.
         </p>
       </article>
+    </section>
+
+    <section class="download" id="download">
+      <h2>Get the app</h2>
+      <p>Kowloon is coming soon to iPhone and Android.</p>
+      <div class="stores">
+        <!-- When the apps ship, swap each span for <a href="STORE_URL"> and
+             remove the is-soon class + aria-disabled. -->
+        <span class="store-btn is-soon" role="link" aria-disabled="true">
+          <small>Coming soon to the</small>
+          <strong>App Store</strong>
+        </span>
+        <span class="store-btn is-soon" role="link" aria-disabled="true">
+          <small>Coming soon to</small>
+          <strong>Google Play</strong>
+        </span>
+      </div>
     </section>
 
     <section class="waitlist" id="waitlist">
@@ -129,6 +153,13 @@ import splash from '../assets/splash.png';
       margin-top: 1rem;
       opacity: 0.96;
     }
+    .lede {
+      max-width: 46ch;
+      margin: 1.5rem auto 0;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      opacity: 0.82;
+    }
     .splash {
       margin: 0;
     }
@@ -189,6 +220,57 @@ import splash from '../assets/splash.png';
       .principles {
         grid-template-columns: 1fr;
       }
+    }
+
+    /* Download */
+    .download {
+      text-align: center;
+      padding: clamp(2.5rem, 7vw, 4.5rem) 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .download h2 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 4.5vw, 2.2rem);
+    }
+    .download p {
+      margin: 0.75rem 0 1.75rem;
+      opacity: 0.82;
+    }
+    .stores {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .store-btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 0.7rem 1.4rem;
+      min-width: 180px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .store-btn small {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.7;
+    }
+    .store-btn strong {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .store-btn.is-soon {
+      opacity: 0.5;
+      cursor: default;
+    }
+    .store-btn:not(.is-soon):hover {
+      background: var(--paper);
+      color: var(--klein);
     }
 
     /* Waitlist */
