@@ -26,4 +26,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/jzellis/kowloon-network:latest
+          tags: ghcr.io/kowloon-network/kowloon-network:latest
