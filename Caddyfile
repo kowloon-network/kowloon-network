@@ -1,7 +1,11 @@
 # Serves the built static site with automatic HTTPS (Let's Encrypt).
-# The apex only for now; add www once its DNS record exists.
+# www redirects to the apex, which is canonical.
 kowloon.network {
 	encode zstd gzip
 	root * /srv
 	file_server
+}
+
+www.kowloon.network {
+	redir https://kowloon.network{uri} permanent
 }
