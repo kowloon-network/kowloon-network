@@ -30,12 +30,34 @@ const {
         --klein: #002fa7;
         --ink: #1a1a20;
         --paper: #ffffff;
-        /* The page chrome (nav, hero text, footer) is always dark-themed,
-           regardless of which splash scene is showing. Declaring this
-           explicitly is a signal to browsers that this page already has an
-           intentional dark appearance, so they shouldn't apply their own
-           "force dark mode on websites" heuristics on top of it. */
-        color-scheme: dark;
+
+        /* Theme tokens — dark by default, overridden below for light. The
+           page chrome follows the same prefers-color-scheme signal the
+           Splash scene reacts to in JS, so a dark OS gets the night scene
+           + white-on-black chrome, and light gets the day scene + this
+           block's black-on-white chrome. Declaring `color-scheme: light
+           dark` (rather than just `dark`) tells browsers this page already
+           handles both themes itself, so they shouldn't apply their own
+           "force dark/light on websites" heuristics on top of it. */
+        --bg: #000;
+        --fg: var(--paper);
+        --border: rgba(255, 255, 255, 0.4);
+        --border-soft: rgba(255, 255, 255, 0.14);
+        --border-soft-2: rgba(255, 255, 255, 0.1);
+        --topbar-bg: rgba(0, 0, 0, 0.72);
+        --shadow: rgba(0, 0, 0, 0.28);
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #ffffff;
+          --fg: var(--ink);
+          --border: rgba(0, 0, 0, 0.32);
+          --border-soft: rgba(0, 0, 0, 0.12);
+          --border-soft-2: rgba(0, 0, 0, 0.08);
+          --topbar-bg: rgba(255, 255, 255, 0.78);
+          --shadow: rgba(0, 0, 0, 0.16);
+        }
       }
       * {
         box-sizing: border-box;
@@ -48,8 +70,8 @@ const {
       }
       body {
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        background: #000;
-        color: var(--paper);
+        background: var(--bg);
+        color: var(--fg);
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeLegibility;
       }

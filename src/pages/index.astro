@@ -97,7 +97,7 @@ import Splash from '../components/Splash.astro';
       top: 0;
       z-index: 10;
       backdrop-filter: blur(6px);
-      background: rgba(0, 0, 0, 0.72);
+      background: var(--topbar-bg);
     }
     .brand {
       font-weight: 700;
@@ -109,12 +109,12 @@ import Splash from '../components/Splash.astro';
       text-transform: uppercase;
       letter-spacing: 0.16em;
       text-decoration: none;
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border: 1px solid var(--border);
       padding: 0.5rem 0.9rem;
       transition: background 0.15s ease, color 0.15s ease;
     }
     .topbar-cta:hover {
-      background: var(--paper);
+      background: var(--fg);
       color: var(--klein);
     }
 
@@ -152,7 +152,7 @@ import Splash from '../components/Splash.astro';
     .cta {
       display: inline-block;
       text-decoration: none;
-      background: var(--paper);
+      background: var(--fg);
       color: var(--klein);
       font-weight: 600;
       text-transform: uppercase;
@@ -163,7 +163,7 @@ import Splash from '../components/Splash.astro';
     }
     .cta:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      box-shadow: 0 8px 24px var(--shadow);
     }
 
     /* Principles */
@@ -172,7 +172,7 @@ import Splash from '../components/Splash.astro';
       grid-template-columns: repeat(3, 1fr);
       gap: clamp(1.5rem, 4vw, 3rem);
       padding: clamp(2rem, 6vw, 4rem) 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      border-top: 1px solid var(--border-soft);
     }
     .principles article .num {
       font-family: 'Lora', serif;
@@ -201,7 +201,7 @@ import Splash from '../components/Splash.astro';
     .download {
       text-align: center;
       padding: clamp(2.5rem, 7vw, 4.5rem) 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      border-top: 1px solid var(--border-soft);
     }
     .download h2 {
       font-family: 'Lora', Georgia, serif;
@@ -223,7 +223,7 @@ import Splash from '../components/Splash.astro';
       flex-direction: column;
       align-items: flex-start;
       text-decoration: none;
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border: 1px solid var(--border);
       padding: 0.7rem 1.4rem;
       min-width: 180px;
       transition: background 0.15s ease, color 0.15s ease;
@@ -244,7 +244,7 @@ import Splash from '../components/Splash.astro';
       cursor: default;
     }
     .store-btn:not(.is-soon):hover {
-      background: var(--paper);
+      background: var(--fg);
       color: var(--klein);
     }
 
@@ -252,7 +252,7 @@ import Splash from '../components/Splash.astro';
     .waitlist {
       text-align: center;
       padding: clamp(3rem, 9vw, 6rem) 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      border-top: 1px solid var(--border-soft);
     }
     .waitlist h2 {
       font-family: 'Lora', Georgia, serif;
@@ -271,7 +271,7 @@ import Splash from '../components/Splash.astro';
       letter-spacing: 0.14em;
       text-transform: uppercase;
       opacity: 0.5;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid var(--border-soft-2);
     }
   </style>
 </Base>
