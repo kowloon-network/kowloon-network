@@ -30,6 +30,12 @@ const {
         --klein: #002fa7;
         --ink: #1a1a20;
         --paper: #ffffff;
+        /* The page chrome (nav, hero text, footer) is always dark-themed,
+           regardless of which splash scene is showing. Declaring this
+           explicitly is a signal to browsers that this page already has an
+           intentional dark appearance, so they shouldn't apply their own
+           "force dark mode on websites" heuristics on top of it. */
+        color-scheme: dark;
       }
       * {
         box-sizing: border-box;

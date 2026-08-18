@@ -148,5 +148,10 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
     line-height: 0.7;
     white-space: nowrap;
     z-index: 2;
+    /* Without this, iOS Safari's automatic text-inflation heuristic can
+       rescale this on events like tab refocus, shrinking it out of sync
+       with the clamp()-computed size. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 </style>
