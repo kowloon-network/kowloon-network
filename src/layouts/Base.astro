@@ -46,6 +46,14 @@ const {
         --border-soft-2: rgba(255, 255, 255, 0.1);
         --topbar-bg: rgba(0, 0, 0, 0.72);
         --shadow: rgba(0, 0, 0, 0.28);
+        /* The bold solid CTA pill (.cta, and the hover fill on outline
+           buttons) is a brand accent, not just "inverted page background" —
+           reusing --fg for it would make it a heavy black pill in light
+           mode. It swaps which of paper/klein is fill vs. text instead, so
+           it's always a strong two-tone pop: white pill/blue text in dark,
+           blue pill/white text in light. */
+        --accent-bg: var(--paper);
+        --accent-fg: var(--klein);
         color-scheme: light dark;
       }
       @media (prefers-color-scheme: light) {
@@ -57,6 +65,8 @@ const {
           --border-soft-2: rgba(0, 0, 0, 0.08);
           --topbar-bg: rgba(255, 255, 255, 0.78);
           --shadow: rgba(0, 0, 0, 0.16);
+          --accent-bg: var(--klein);
+          --accent-fg: var(--paper);
         }
       }
       * {

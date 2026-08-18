@@ -78,8 +78,17 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
       var nextPlaneAt = 0;
       var planeImg = null;
       var planeReady = false;
+      var planeBaseW = 130; // recomputed from canvas width in setup()
 
       var PLANE_ASPECT = 2334 / 2030; // native plane.svg viewBox
+      // Fraction of canvas width the plane's base size is drawn at — this
+      // must scale with the canvas, not be a fixed pixel value. At a fixed
+      // 45° climb, the plane's own width is how much vertical "headroom" it
+      // burns just entering the frame from off-screen right. On a narrow
+      // (mobile) canvas that headroom cost was swallowing the whole flight
+      // before it ever became visible, so the plane appeared to never show
+      // up at all on phones.
+      var PLANE_WIDTH_RATIO = 0.093;
       var PLANE_SPEED_MIN = 3.2;
       var PLANE_SPEED_MAX = 4.6;
       var PLANE_MIN_DELAY_MS = 25000;
@@ -96,7 +105,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
 
       function launchPlane() {
         var scale = p.random(0.75, 1.25);
-        var w = 130 * scale;
+        var w = planeBaseW * scale;
         var h = w / PLANE_ASPECT;
         var speed = p.random(PLANE_SPEED_MIN, PLANE_SPEED_MAX);
         plane = {
@@ -141,6 +150,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
         var container = document.getElementById('clouds');
         p.createCanvas(container.offsetWidth, container.offsetHeight).parent('clouds');
         p.noStroke();
+        planeBaseW = p.width * PLANE_WIDTH_RATIO;
         // Sized as a fraction of canvas width, not a fixed pixel range —
         // on narrow (mobile) viewports a 400px cloud used to swallow the
         // whole sky. Max 20% of width keeps the same relative variety at
