@@ -34,6 +34,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
     var lightMq = window.matchMedia('(prefers-color-scheme: light)');
 
     var cloudColor = SCENES.night.cloud;
+    var currentSceneId = 'night';
 
     function pickScene() {
       if (darkMq.matches) return 'night';
@@ -53,6 +54,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
       imgbg.style.background = s.bg;
       titleEl.style.color = s.title;
       cloudColor = s.cloud;
+      currentSceneId = id;
     }
 
     applyScene();
@@ -61,8 +63,80 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
 
     // Clouds — p5.js sketch, layered behind the scene SVGs. Reads
     // `cloudColor` on every frame, so it follows scene changes live.
+    //
+    // A plane rarely drifts across the same canvas, always at a fixed 45°
+    // to the northwest (lower-right to upper-left), with a randomized start
+    // Y/scale/speed each time. It's drawn after the clouds so it renders
+    // above them, and — since this whole canvas sits below the building
+    // SVGs in z-index — automatically behind the buildings too.
+    //
+    // Drop the real artwork at public/splash/plane.svg and this switches
+    // from the placeholder triangle to it automatically, no code changes.
     new p5(function (p) {
       var clouds = [];
+      var plane = null;
+      var nextPlaneAt = 0;
+      var planeImg = null;
+      var planeReady = false;
+
+      var PLANE_ASPECT = 2334 / 2030; // native plane.svg viewBox
+      var PLANE_SPEED_MIN = 3.2;
+      var PLANE_SPEED_MAX = 4.6;
+      var PLANE_MIN_DELAY_MS = 25000;
+      var PLANE_MAX_DELAY_MS = 70000;
+      // Fixed 45° to the northwest — no rotation logic, ever. The artwork
+      // is a perspective illustration already drawn in its one flight
+      // attitude, not a silhouette meant to be rotated to face a heading.
+      var PLANE_VX = -Math.SQRT1_2;
+      var PLANE_VY = -Math.SQRT1_2;
+
+      function scheduleNextPlane() {
+        nextPlaneAt = p.millis() + p.random(PLANE_MIN_DELAY_MS, PLANE_MAX_DELAY_MS);
+      }
+
+      function launchPlane() {
+        var scale = p.random(0.75, 1.25);
+        var w = 130 * scale;
+        var h = w / PLANE_ASPECT;
+        var speed = p.random(PLANE_SPEED_MIN, PLANE_SPEED_MAX);
+        plane = {
+          x: p.width + w,
+          y: p.random(p.height * 0.45, p.height * 0.75),
+          w: w,
+          h: h,
+          vx: PLANE_VX * speed,
+          vy: PLANE_VY * speed,
+        };
+      }
+
+      function drawPlane(pl) {
+        if (planeReady && planeImg) {
+          p.imageMode(p.CENTER);
+          p.image(planeImg, pl.x + pl.w / 2, pl.y + pl.h / 2, pl.w, pl.h);
+        } else {
+          // Placeholder silhouette, already pointed northwest, until
+          // public/splash/plane.svg loads.
+          p.push();
+          p.noStroke();
+          p.fill(255, 255, 255, 235);
+          p.beginShape();
+          p.vertex(pl.x, pl.y + pl.h);
+          p.vertex(pl.x + pl.w, pl.y + pl.h * 0.88);
+          p.vertex(pl.x + pl.w * 0.7, pl.y + pl.h);
+          p.vertex(pl.x + pl.w, pl.y + pl.h * 1.12);
+          p.endShape(p.CLOSE);
+          p.pop();
+        }
+      }
+
+      p.preload = function () {
+        planeImg = p.loadImage(
+          '/splash/plane.svg',
+          function () { planeReady = true; },
+          function () { planeReady = false; }
+        );
+      };
+
       p.setup = function () {
         var container = document.getElementById('clouds');
         p.createCanvas(container.offsetWidth, container.offsetHeight).parent('clouds');
@@ -75,7 +149,9 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
             speed: p.random(0.05, 0.2),
           });
         }
+        scheduleNextPlane();
       };
+
       p.draw = function () {
         p.clear();
         p.fill(cloudColor[0], cloudColor[1], cloudColor[2]);
@@ -84,6 +160,23 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
           p.ellipse(c.x, c.y, c.size, c.size * 0.6);
           c.x += c.speed;
           if (c.x - c.size > p.width) c.x = -c.size;
+        }
+
+        // Day scene only — if the scene switches to night mid-flight (a
+        // live OS-theme change), drop the plane immediately.
+        if (currentSceneId !== 'day') {
+          plane = null;
+        } else if (!plane && p.millis() > nextPlaneAt) {
+          launchPlane();
+        }
+        if (plane) {
+          drawPlane(plane);
+          plane.x += plane.vx;
+          plane.y += plane.vy;
+          if (plane.x < -plane.w || plane.y < -plane.h) {
+            plane = null;
+            scheduleNextPlane();
+          }
         }
       };
     });
