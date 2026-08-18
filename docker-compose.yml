@@ -3,7 +3,7 @@
 # The image (Caddy + built site) is published by CI to GHCR on every push to main.
 services:
   web:
-    image: ghcr.io/jzellis/kowloon-network:latest
+    image: ghcr.io/kowloon-network/kowloon-network:latest
     restart: unless-stopped
     ports:
       - "80:80"
