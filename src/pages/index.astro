@@ -77,7 +77,12 @@ import Splash from '../components/Splash.astro';
 
     <section class="waitlist" id="waitlist">
       <h2>Kowloon opens soon.</h2>
-      <p>Be first through the gate. We'll email you when it's time.</p>
+      <p>
+        Sign up to be notified when Kowloon is open to the public. And don't
+        worry &mdash; we won't sell your email address or add you to our
+        mailing list. Once we've sent the email telling everyone it's ready,
+        we'll delete the mailing list. Promise.
+      </p>
       <form class="waitlist-form" id="waitlist-form">
         <input
           type="email"
@@ -278,7 +283,8 @@ import Splash from '../components/Splash.astro';
       font-size: clamp(1.6rem, 5vw, 2.4rem);
     }
     .waitlist p {
-      margin: 0.75rem 0 1.75rem;
+      max-width: 46ch;
+      margin: 0.75rem auto 1.75rem;
       opacity: 0.82;
     }
     .waitlist-form {
@@ -328,10 +334,6 @@ import Splash from '../components/Splash.astro';
     .waitlist-status.is-error {
       color: #d64545;
     }
-    .waitlist-status.is-success {
-      color: var(--fg);
-      opacity: 0.85;
-    }
 
     footer {
       text-align: center;
@@ -375,9 +377,8 @@ import Splash from '../components/Splash.astro';
         });
         const data = await res.json().catch(() => ({}));
         if (res.ok && data.ok) {
-          status.textContent = "You're on the list. We'll email you when it's time.";
-          status.classList.add('is-success');
           form.reset();
+          alert("You're on the list. We'll email you when it's time.");
         } else {
           status.textContent = data.error || 'Something went wrong — try again.';
           status.classList.add('is-error');
