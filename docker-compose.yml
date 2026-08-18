@@ -1,10 +1,12 @@
 # Deploy on the kowloon.network box:
 #   docker compose pull && docker compose up -d
-# The image (Caddy + built site) is published by CI to GHCR on every push to main.
+# Both images are published by CI to GHCR on every push to main.
 services:
   web:
     image: ghcr.io/kowloon-network/kowloon-network:latest
     restart: unless-stopped
+    depends_on:
+      - waitlist
     ports:
       - "80:80"
       - "443:443"
@@ -13,6 +15,18 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
+  # Waitlist signup capture — no published port, only reachable from the
+  # `web` container over Docker's internal network. See waitlist/server.js
+  # for what it does and doesn't do with the data.
+  waitlist:
+    image: ghcr.io/kowloon-network/kowloon-network-waitlist:latest
+    restart: unless-stopped
+    environment:
+      ALLOWED_ORIGIN: https://kowloon.network
+    volumes:
+      - waitlist_data:/data
+
 volumes:
   caddy_data:
   caddy_config:
+  waitlist_data:

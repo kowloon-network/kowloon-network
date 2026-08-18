@@ -78,8 +78,26 @@ import Splash from '../components/Splash.astro';
     <section class="waitlist" id="waitlist">
       <h2>Kowloon opens soon.</h2>
       <p>Be first through the gate. We'll email you when it's time.</p>
-      <!-- TODO: wire to Kit (ConvertKit) form -->
-      <a class="cta" href="#">Join the waitlist &rarr;</a>
+      <form class="waitlist-form" id="waitlist-form">
+        <input
+          type="email"
+          name="email"
+          id="waitlist-email"
+          class="waitlist-email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+        <button type="submit" class="cta">Join the waitlist &rarr;</button>
+        <!-- Honeypot — invisible to real visitors, left blank by them.
+             Bots that fill in every field trip it; caught silently
+             server-side, not with display:none (some bots skip that). -->
+        <span class="waitlist-hp" aria-hidden="true">
+          <label for="waitlist-company">Company</label>
+          <input type="text" id="waitlist-company" name="company" tabindex="-1" autocomplete="off" />
+        </span>
+      </form>
+      <p class="waitlist-status" id="waitlist-status" role="status" aria-live="polite"></p>
     </section>
   </main>
 
@@ -263,6 +281,57 @@ import Splash from '../components/Splash.astro';
       margin: 0.75rem 0 1.75rem;
       opacity: 0.82;
     }
+    .waitlist-form {
+      display: inline-flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .waitlist-email {
+      font: inherit;
+      font-size: 0.95rem;
+      padding: 0.9rem 1.1rem;
+      min-width: 260px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--fg);
+    }
+    .waitlist-email::placeholder {
+      color: var(--fg);
+      opacity: 0.45;
+    }
+    .waitlist-email:focus {
+      outline: none;
+      border-color: var(--klein);
+    }
+    .waitlist-form button.cta {
+      border: none;
+      font: inherit;
+      cursor: pointer;
+    }
+    .waitlist-form button.cta:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    .waitlist-hp {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      left: -9999px;
+    }
+    .waitlist-status {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      min-height: 1.2em;
+    }
+    .waitlist-status.is-error {
+      color: #d64545;
+    }
+    .waitlist-status.is-success {
+      color: var(--fg);
+      opacity: 0.85;
+    }
 
     footer {
       text-align: center;
@@ -274,4 +343,52 @@ import Splash from '../components/Splash.astro';
       border-top: 1px solid var(--border-soft-2);
     }
   </style>
+
+  <script>
+    const form = document.getElementById('waitlist-form');
+    const status = document.getElementById('waitlist-status');
+    const emailInput = document.getElementById('waitlist-email');
+    const companyInput = document.getElementById('waitlist-company');
+    const button = form.querySelector('button[type="submit"]');
+    // Roughly "page load" — used server-side as a minimum-fill-time bot
+    // check, so it just needs to predate any realistic human submission.
+    const loadedAt = Date.now();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.textContent = '';
+      status.className = 'waitlist-status';
+
+      const originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Joining…';
+
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value.trim(),
+            company: companyInput.value,
+            loadedAt,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          status.textContent = "You're on the list. We'll email you when it's time.";
+          status.classList.add('is-success');
+          form.reset();
+        } else {
+          status.textContent = data.error || 'Something went wrong — try again.';
+          status.classList.add('is-error');
+        }
+      } catch {
+        status.textContent = 'Something went wrong — try again.';
+        status.classList.add('is-error');
+      } finally {
+        button.disabled = false;
+        button.textContent = originalLabel;
+      }
+    });
+  </script>
 </Base>

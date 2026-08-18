@@ -2,8 +2,19 @@
 # www redirects to the apex, which is canonical.
 kowloon.network {
 	encode zstd gzip
-	root * /srv
-	file_server
+
+	# Only this one path leaves the static file server — proxied over
+	# Docker's internal network to the waitlist sidecar, never exposed
+	# as its own public port. handle_path strips the /api/waitlist
+	# prefix before forwarding.
+	handle_path /api/waitlist* {
+		reverse_proxy waitlist:8090
+	}
+
+	handle {
+		root * /srv
+		file_server
+	}
 }
 
 www.kowloon.network {
