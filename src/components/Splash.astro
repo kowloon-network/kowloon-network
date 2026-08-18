@@ -79,8 +79,15 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
       var planeImg = null;
       var planeReady = false;
       var planeBaseW = 130; // recomputed from canvas width in setup()
+      var planeSpeedMult = 1; // halved on mobile in setup() — see below
 
       var PLANE_ASPECT = 2334 / 2030; // native plane.svg viewBox
+      // Below this canvas width the plane reads as noticeably faster than
+      // on desktop, even with its size already scaled down — a smaller
+      // plane at the same absolute px/frame speed covers proportionally
+      // more of a narrower canvas per second. 720px matches this page's
+      // existing mobile breakpoint (see index.astro's .principles grid).
+      var PLANE_MOBILE_BREAKPOINT = 720;
       // Fraction of canvas width the plane's base size is drawn at — this
       // must scale with the canvas, not be a fixed pixel value. At a fixed
       // 45° climb, the plane's own width is how much vertical "headroom" it
@@ -107,7 +114,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
         var scale = p.random(0.75, 1.25);
         var w = planeBaseW * scale;
         var h = w / PLANE_ASPECT;
-        var speed = p.random(PLANE_SPEED_MIN, PLANE_SPEED_MAX);
+        var speed = p.random(PLANE_SPEED_MIN, PLANE_SPEED_MAX) * planeSpeedMult;
         plane = {
           x: p.width + w,
           y: p.random(p.height * 0.45, p.height * 0.75),
@@ -151,6 +158,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
         p.createCanvas(container.offsetWidth, container.offsetHeight).parent('clouds');
         p.noStroke();
         planeBaseW = p.width * PLANE_WIDTH_RATIO;
+        planeSpeedMult = p.width < PLANE_MOBILE_BREAKPOINT ? 0.5 : 1;
         // Sized as a fraction of canvas width, not a fixed pixel range —
         // on narrow (mobile) viewports a 400px cloud used to swallow the
         // whole sky. Max 20% of width keeps the same relative variety at
