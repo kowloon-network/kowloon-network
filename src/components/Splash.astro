@@ -141,11 +141,17 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
         var container = document.getElementById('clouds');
         p.createCanvas(container.offsetWidth, container.offsetHeight).parent('clouds');
         p.noStroke();
+        // Sized as a fraction of canvas width, not a fixed pixel range —
+        // on narrow (mobile) viewports a 400px cloud used to swallow the
+        // whole sky. Max 20% of width keeps the same relative variety at
+        // every screen size.
+        var minSize = p.width * 0.03;
+        var maxSize = p.width * 0.2;
         for (var i = 0; i < 20; i++) {
           clouds.push({
             x: p.random(p.width),
             y: p.random(p.height * 0.5),
-            size: p.random(20, 400),
+            size: p.random(minSize, maxSize),
             speed: p.random(0.05, 0.2),
           });
         }
