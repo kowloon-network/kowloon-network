@@ -1,9 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { Image } from 'astro:assets';
-// Splash illustration — PLACEHOLDER art. Replace src/assets/splash.png with
-// Shan's final artwork; the optimizer handles the rest.
-import splash from '../assets/splash.png';
+import Splash from '../components/Splash.astro';
 ---
 
 <Base title="Kowloon — a social network built on circles, not followers">
@@ -12,21 +9,13 @@ import splash from '../assets/splash.png';
     <a class="topbar-cta" href="#waitlist">Join the waitlist</a>
   </header>
 
-  <!-- Full-bleed hero illustration, right under the top bar -->
-  <figure class="splash">
-    <Image
-      src={splash}
-      widths={[720, 1280, 1672]}
-      sizes="100vw"
-      format="webp"
-      quality={78}
-      alt="Kowloon — a neon city of small, self-governed places"
-    />
-  </figure>
+  <!-- Full-bleed hero scene, right under the top bar. The "KOWLOON" title
+       is rendered inside Splash itself, overlaid on the scene, so it
+       replaces what used to be a separate <h1> below. -->
+  <Splash />
 
   <main>
     <section class="hero">
-      <h1 class="wordmark">KOWLOON</h1>
       <p class="tagline">Circles, not followers.<br />No algorithm. Own your words.</p>
 
       <p class="lede">
@@ -140,12 +129,6 @@ import splash from '../assets/splash.png';
       text-align: center;
       padding: clamp(2.5rem, 7vw, 5rem) 0 clamp(3rem, 8vw, 6rem);
     }
-    .wordmark {
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      margin-left: 0.3em;
-      font-size: clamp(2rem, 7vw, 3.75rem);
-    }
     .tagline {
       font-family: 'Lora', Georgia, serif;
       font-size: clamp(1.2rem, 4vw, 1.9rem);
@@ -159,14 +142,6 @@ import splash from '../assets/splash.png';
       font-size: 1.05rem;
       line-height: 1.65;
       opacity: 0.82;
-    }
-    .splash {
-      margin: 0;
-    }
-    .splash img {
-      display: block;
-      width: 100%;
-      height: auto;
     }
     .soon {
       margin-top: 1.5rem;

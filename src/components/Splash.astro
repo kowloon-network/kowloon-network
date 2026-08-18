@@ -1,0 +1,152 @@
+---
+// Hero scene: a day/night city skyline that follows the visitor's OS theme
+// (falling back to local time if the browser reports no preference), with a
+// drifting p5.js cloud layer and a flickering night-window effect.
+//
+// The two scenes are full illustrations exported as standalone SVGs (see
+// src/assets/splash/) and inlined here via a raw import so window1–window8
+// stay addressable by id for the flicker effect, without keeping thousands
+// of lines of markup in this file.
+import nightSceneSvg from '../assets/splash/night-scene.svg?raw';
+import daySceneSvg from '../assets/splash/day-scene.svg?raw';
+---
+
+<div id="svgwrap">
+  <div id="imgbg">
+    <div id="clouds"></div>
+    <div id="night" class="scene" set:html={nightSceneSvg} />
+    <div id="day" class="scene" set:html={daySceneSvg} />
+  </div>
+  <div id="splash_title">Kowloon</div>
+</div>
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script is:inline>
+  (function () {
+    var SCENES = {
+      night: { bg: '#130848', title: '#D68536', cloud: [48, 25, 171] },
+      day: { bg: '#ADD8E1', title: '#ffffff', cloud: [255, 255, 255] },
+    };
+
+    var imgbg = document.getElementById('imgbg');
+    var titleEl = document.getElementById('splash_title');
+    var darkMq = window.matchMedia('(prefers-color-scheme: dark)');
+    var lightMq = window.matchMedia('(prefers-color-scheme: light)');
+
+    var cloudColor = SCENES.night.cloud;
+
+    function pickScene() {
+      if (darkMq.matches) return 'night';
+      if (lightMq.matches) return 'day';
+      // Browser reports no OS preference — fall back to local time.
+      var hour = new Date().getHours();
+      return hour >= 6 && hour < 20 ? 'day' : 'night';
+    }
+
+    function applyScene() {
+      var id = pickScene();
+      var s = SCENES[id];
+      document.querySelectorAll('.scene').forEach(function (el) {
+        el.style.display = 'none';
+      });
+      document.getElementById(id).style.display = 'block';
+      imgbg.style.background = s.bg;
+      titleEl.style.color = s.title;
+      cloudColor = s.cloud;
+    }
+
+    applyScene();
+    darkMq.addEventListener('change', applyScene);
+    lightMq.addEventListener('change', applyScene);
+
+    // Clouds — p5.js sketch, layered behind the scene SVGs. Reads
+    // `cloudColor` on every frame, so it follows scene changes live.
+    new p5(function (p) {
+      var clouds = [];
+      p.setup = function () {
+        var container = document.getElementById('clouds');
+        p.createCanvas(container.offsetWidth, container.offsetHeight).parent('clouds');
+        p.noStroke();
+        for (var i = 0; i < 20; i++) {
+          clouds.push({
+            x: p.random(p.width),
+            y: p.random(p.height * 0.5),
+            size: p.random(20, 400),
+            speed: p.random(0.05, 0.2),
+          });
+        }
+      };
+      p.draw = function () {
+        p.clear();
+        p.fill(cloudColor[0], cloudColor[1], cloudColor[2]);
+        for (var i = 0; i < clouds.length; i++) {
+          var c = clouds[i];
+          p.ellipse(c.x, c.y, c.size, c.size * 0.6);
+          c.x += c.speed;
+          if (c.x - c.size > p.width) c.x = -c.size;
+        }
+      };
+    });
+
+    // Window flicker — night scene only; harmless no-op when day is active
+    // since window1–window8 don't exist in the day scene.
+    var flickerColors = ['#dd308c', '#1b0360'];
+    setInterval(function () {
+      for (var i = 1; i <= 8; i++) {
+        var el = document.getElementById('window' + i);
+        if (el) el.style.fill = flickerColors[Math.floor(Math.random() * flickerColors.length)];
+      }
+    }, 3000);
+  })();
+</script>
+
+<style>
+  #svgwrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1024 / 576;
+    overflow: hidden;
+  }
+  #svgwrap :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  #imgbg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  .scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: none;
+  }
+  #splash_title {
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 18vw, 20rem);
+    line-height: 0.7;
+    white-space: nowrap;
+    z-index: 2;
+  }
+</style>
