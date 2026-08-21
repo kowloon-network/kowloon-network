@@ -17,7 +17,7 @@ import Splash from '../components/Splash.astro';
   <main>
     <section class="hero">
       <p class="tagline">
-        A cool, multipurpose social network that's made for people, not profits.
+        A completely cool, multipurpose social network that's made for people, not profits.
       </p>
 
       <p class="lede">
@@ -30,7 +30,7 @@ import Splash from '../components/Splash.astro';
         than anything else out there. And did we mention it's free?
       </p>
 
-      <a class="cta" href="#waitlist">Join the waitlist &rarr;</a>
+      <a class="cta hero-cta" href="#waitlist">Join the waitlist &rarr;</a>
     </section>
 
     <section class="content-section">
@@ -41,16 +41,14 @@ import Splash from '../components/Splash.astro';
         also function as their own &ldquo;walled cities,&rdquo; like the
         legendary Hong Kong enclave from which Kowloon takes its name. And
         instead of &ldquo;friends&rdquo; and &ldquo;followers,&rdquo; and an
-        &ldquo;algorithm&rdquo; that decides what you see, Kowloon has
-        <strong>Circles</strong>.
+        &ldquo;algorithm&rdquo; that decides what you see, Kowloon has <strong>Circles</strong>.
       </p>
       <p>
         Find a Kowloon community full of your friends or people with shared
         interests, and you can make any post public or community-only. Create
         a &ldquo;Friends&rdquo; Circle and a &ldquo;Family&rdquo; Circle and
         share pics of your kids to Family and dirty jokes to Friends. No one
-        else can see these posts but the people you choose, and no one knows
-        <em>which</em> Circle you've put them in&hellip; so nobody's feelings
+        else can see these posts but the people you choose, and no one knows <em>which</em> Circle you've put them in&hellip; so nobody's feelings
         will get hurt if they're in your &ldquo;Friends&rdquo; Circle but not
         your &ldquo;BFFs&rdquo; Circle.
       </p>
@@ -68,8 +66,10 @@ import Splash from '../components/Splash.astro';
         find new and interesting people and communities to follow. In
         Kowloon, <em>you</em> are the algorithm.
       </p>
+    </section>
 
-      <h3>Freedom Of Speech, Freedom From Speech</h3>
+    <section class="content-section">
+      <h2>Freedom Of Speech, Freedom From Speech</h2>
       <p>
         Because Kowloon isn't a corporate-owned network but a federation of
         individual communities, no one but your community's admin can tell
@@ -114,9 +114,7 @@ import Splash from '../components/Splash.astro';
     <section class="content-section">
       <h2>Free As In Speech, Free As In Beer</h2>
       <p>
-        Kowloon is entirely
-        <a href="https://github.com/kowloon-network">open source</a>
-        and built with the MERN stack (MongoDB, Express, React, Node.js), and
+        Kowloon is entirely <a href="https://github.com/kowloon-network">open source</a> and built with the MERN stack (MongoDB, Express, React, Node.js), and
         it costs nothing &mdash; you can run the install script on your
         server and have a running Kowloon community server in five minutes!
       </p>
@@ -277,13 +275,6 @@ import Splash from '../components/Splash.astro';
       max-width: 68ch;
       margin-bottom: 1.25rem;
     }
-    .content-section h3 {
-      font-family: 'Lora', Georgia, serif;
-      font-weight: 600;
-      font-size: clamp(1.1rem, 2.8vw, 1.3rem);
-      max-width: 68ch;
-      margin: 2rem 0 1rem;
-    }
     .content-section p {
       max-width: 68ch;
       font-size: 1rem;
@@ -294,13 +285,19 @@ import Splash from '../components/Splash.astro';
     .content-section p:last-of-type {
       margin-bottom: 1.5rem;
     }
-    .content-section a {
+    .content-section p a {
       color: inherit;
       text-decoration: underline;
       text-underline-offset: 0.15em;
     }
     .content-section strong {
       font-weight: 600;
+    }
+    .content-section .cta {
+      margin-top: 0.5rem;
+    }
+    .hero-cta {
+      margin-top: 1.75rem;
     }
 
     /* Download */
