@@ -6,7 +6,10 @@ import Splash from '../components/Splash.astro';
 <Base title="Kowloon — a social network built on circles, not followers">
   <header class="topbar">
     <span class="brand">KOWLOON</span>
-    <a class="topbar-cta" href="#waitlist">Join the waitlist</a>
+    <nav class="topbar-nav">
+      <a class="topbar-link" href="/docs/">Docs</a>
+      <a class="topbar-cta" href="#waitlist">Join the waitlist</a>
+    </nav>
   </header>
 
   <!-- Full-bleed hero scene, right under the top bar. The "KOWLOON" title
@@ -235,6 +238,22 @@ import Splash from '../components/Splash.astro';
       font-weight: 700;
       letter-spacing: 0.24em;
       font-size: 0.95rem;
+    }
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(1rem, 3vw, 1.5rem);
+    }
+    .topbar-link {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      text-decoration: none;
+      opacity: 0.75;
+      transition: opacity 0.15s ease;
+    }
+    .topbar-link:hover {
+      opacity: 1;
     }
     .topbar-cta {
       font-size: 0.72rem;
