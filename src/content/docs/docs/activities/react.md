@@ -54,8 +54,4 @@ Only gated on new/changed reactions β€” clearing your own past reaction is 
 
 ## Client mapping
 
-`react({ postId, emoji, name })` matches exactly, including the deliberate `object.type` omission on clear.
-
-:::danger[deleteReact() is broken β€” see Gotchas]
-`deleteReact({ reactId })` does **not** produce a valid clear payload. It sends an `Undo` activity that the server always rejects. See [Known gotchas](/docs/activities/gotchas/#deletereact-is-broken) for the full explanation β€” the working way to clear a reaction from the client SDK is `react({ postId, emoji: '' })`, documented above.
-:::
+`react({ postId, emoji, name })` matches exactly, including the deliberate `object.type` omission on clear. There is no separate `deleteReact()` method β€” it used to exist but always failed server-side validation, and has been removed; `react({ postId, emoji: '' })` is the only (and correct) way to clear a reaction.

@@ -74,13 +74,7 @@ await client.activities.react({ postId, emoji: '' })        // clear
 
 One reaction per user per target — this is an upsert, not an append. A truthy `emoji` string sets or replaces your existing reaction; an empty/omitted `emoji` clears it. On clear, the client deliberately omits `object.type` from the payload — if it were present, the server's fallback field-resolution (`object.react || object.emoji || object.type`) could misread it as the emoji value. The response is `{ ok, result: { status: 'reacted', react, bumped } }` — there's no id, since this is an upsert, not a create.
 
-```js
-await client.activities.deleteReact({ reactId })
-```
-
-:::danger[Confirmed broken]
-`deleteReact()` sends `{ type: 'Undo', objectType: 'React', target: reactId }`. The server's `Undo` handler requires a full `object` (the original activity being undone), not a `target` id, and has no code path that reads `target` at all — this call will always fail server-side validation. **Use `react({ postId, emoji: '' })` instead** to clear a reaction; that's the actually-working path. See the [Activities gotchas page](/docs/activities/gotchas/) for the server-side details.
-:::
+There is no `deleteReact()` method — it used to exist, always failed server-side validation, and has been removed. `react({ postId, emoji: '' })` above is the only (and correct) way to clear a reaction.
 
 ## Circles
 
@@ -119,9 +113,7 @@ client.activities.rejectJoinRequest({ groupId, userId })
 
 `rsvpPolicy` values: `open`, `serverOpen`, `serverApproval`, `approvalOnly` (see [membership activities](/docs/activities/membership/) for what each one means). Joining an `approvalOnly` group returns `result.status === 'pending'` rather than throwing — check the status, don't assume success means "joined."
 
-:::danger[Confirmed broken]
-`rejectJoinRequest()` sends `{ type: 'Reject', to: groupId, object: userId }`. `"Reject"` is not a recognized Activity type on the server — there's no matching entry in the envelope schema's `type` enum and no `Reject` handler. This call will always fail schema validation. There is currently no working client method for rejecting a pending join request; `Remove` against the group's Pending circle is the closest server-side equivalent, but no client method calls it that way today.
-:::
+`rejectJoinRequest()` sends `{ type: 'Remove', to: groupId, object: userId }` — there's no dedicated "Reject" activity type. The server's `Remove` handler already falls back to the group's Pending circle when the target isn't found in Members, which is exactly what rejecting a pending request means; this mirrors `approveJoinRequest()`'s `Add`-based pattern above.
 
 ## Bookmarks
 
@@ -171,6 +163,6 @@ client.activities.upload(options)   // delegates directly to client.files.upload
 
 `updateProfile` posts `{ type: 'Update', objectType: 'User', target: userId, object: updates }`. `setPins` is a thin wrapper over `updateProfile` that writes `prefs.pinnedCircles`/`prefs.pinnedGroups` — pass the **full** ordered array each time, not just the items you're adding or removing.
 
-`follow`/`unfollow` are `Add`/`Remove` against the user's own `following` circle id (read from `auth._user.following`, populated at login) — **there is no dedicated Follow/Unfollow activity sent from the client.** Circles are the follow mechanism; see [the federation activities page](/docs/activities/federation/) for the separate, federation-only Follow/Unfollow/Accept machinery that exists server-side but isn't reachable from this client.
+`follow`/`unfollow` are `Add`/`Remove` against the user's own `following` circle id (read from `auth._user.following`, populated at login) — **there is no separate Follow/Unfollow activity type at all.** Circles are the only follow mechanism; see [Architecture](/docs/architecture/#circles-replace-followfollowers).
 
 `block`/`unblock`/`mute`/`unmute` each call `this.moderation?.invalidate()` after a successful post, so `client.moderation`'s cached exclusion set stays in sync without you having to call `invalidate()` yourself.

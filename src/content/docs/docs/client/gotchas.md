@@ -24,22 +24,10 @@ All four take a bare string. Everything else on those same sub-clients (`FilesCl
 `client.activities.updatePost({ postId, updates: { content } })` does **not** send `content` at `object.content`. It's remapped to `object.source = { content }`, matching where the server's `Update` handler for Posts actually expects content patches. Similarly, `to`/`canReply`/`canReact` patch values are nested inside `object`, not sent at the activity's top level. Get this wrong and the update silently no-ops on the field you meant to change rather than erroring.
 :::
 
-:::danger[`deleteReact()` is confirmed broken]
-`client.activities.deleteReact({ reactId })` sends `{ type: 'Undo', objectType: 'React', target: reactId }`. The server's `Undo` handler requires a full `object` — the original activity being undone — and has no code path that reads a bare `target` id at all. This call will always fail server-side validation with a missing-object error. **The working way to clear a reaction is `client.activities.react({ postId, emoji: '' })`** — an empty-string emoji is the server's actual "clear my reaction" signal. See the [Activities gotchas page](/docs/activities/gotchas/) for the server-side confirmation.
-:::
-
-:::danger[`rejectJoinRequest()` sends a nonexistent Activity type]
-`client.activities.rejectJoinRequest({ groupId, userId })` sends `{ type: 'Reject', ... }`. `"Reject"` isn't a recognized Activity type anywhere on the server — it's not in the envelope schema's `type` enum, and there's no `Reject` handler. This call always fails. There is currently no working client method for rejecting a pending group join request.
-:::
-
 :::caution[`createInvite` has an exact field-name requirement]
 `client.admin.createInvite({ email, maxRedemptions, ... })` — a code comment in the client itself warns that an earlier version used `recipient`/`amount` instead, which the server silently dropped (unrecognized fields, no error), shipping invites with no recipient email and no redemption cap. Use `email`/`maxRedemptions` exactly.
 :::
 
-:::note[The client's own CLAUDE.md is stale]
-The internal `client/CLAUDE.md` module list omits `embeds/`, `moderation/`, `prefs/manifest.js`, `prefs/pins.js`, and `themes/` entirely — all five are real, first-class modules with their own doc pages here. It also states admin is "a separate package export only," which is incomplete: `client.admin` is wired onto every normal `KowloonClient` instance too, in addition to being reachable via the `@kowloon/client/admin` subpath export. Both access paths work; treat this documentation site, not that file, as current.
-:::
-
 ## Related
 
-- [Activities gotchas](/docs/activities/gotchas/) — server-side Activity-type bugs and dead code (Upload being unreachable, the parallel Follow/Unfollow federation layer, etc.) that these client-side issues connect to.
+- [Activities gotchas](/docs/activities/gotchas/) — server-side Activity-type fixes and removals (Upload, deleteReact/rejectJoinRequest, the Follow/Unfollow/Accept removal) that these client-side issues connect to.

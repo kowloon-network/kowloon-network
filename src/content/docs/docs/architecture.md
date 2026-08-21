@@ -13,7 +13,7 @@ Kowloon has no first-class "follow" feature in its primary UX. Instead, every us
 
 A handful of Circles are created automatically for every user and are treated as structural, not just conventional — most notably `following`, `allFollowing`, `groups`, `blocked`, and `muted`. Content pulled into a Circle only ever shows up in the feeds of the Circle's owner.
 
-This is the whole story for ordinary, first-party client use. Underneath it, though, the server also implements a second, separate mechanism — real ActivityPub `Follow`/`Unfollow`/`Accept` activities — purely so remote, non-Kowloon actors can follow a Kowloon user (and vice versa) using standard AP semantics. That mechanism is not reachable from any first-party client method; see [Follow, Unfollow, Accept & Announce](/docs/activities/federation/) for the full explanation.
+Adding someone to a Circle is always the same `Add` activity, whether it's a user-made circle or the built-in `following` circle — the client's `addToCircle()` and `follow()` methods both send `{ type: "Add", target: circleId, object: member }`, just aimed at a different circle. There's no separate "Follow" activity in the real, supported app.
 
 ## Addressing: `to`, `canReply`, `canReact`
 
@@ -41,7 +41,7 @@ All writes go through one door: `POST /outbox`, with an **Activity envelope** �
 3. `ActivityParser` dispatches to exactly one handler based on `activity.type` (for most types) or by parsing the `target` ID's prefix (for `Update`/`Delete`).
 4. The handler does the actual work — creating/mutating documents, updating `FeedItems`, firing notifications, deciding what (if anything) to federate — and returns a result that becomes the HTTP response.
 
-Every Activity type — `Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Follow`, `Unfollow`, `Accept`, `Undo`, `Announce`, `Flag` — has its own handler under `ActivityParser/handlers/`. The full envelope shape, validation rules, and per-type behavior are covered starting at [Activities → Overview](/docs/activities/overview/).
+Every Activity type — `Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Undo`, `Announce`, `Flag` — has its own handler under `ActivityParser/handlers/`. The full envelope shape, validation rules, and per-type behavior are covered starting at [Activities → Overview](/docs/activities/overview/).
 
 ## FeedItems: the timeline cache
 

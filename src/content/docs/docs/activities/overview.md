@@ -38,10 +38,10 @@ Validated with AJV against `activity.schema.js` (`https://kwln.org/activity.sche
 
 ```js
 type: enum [
-  "Accept", "Add", "Announce", "Block", "Create", "Delete", "Flag",
-  "Follow", "Join", "Leave", "Mute", "React", "Remove", "Reply",
-  "Unblock", "Undo", "Unfollow", "Unmute", "Update"
-]  // 18 values
+  "Add", "Announce", "Block", "Create", "Delete", "Flag",
+  "Join", "Leave", "Mute", "React", "Remove", "Reply",
+  "Unblock", "Undo", "Unmute", "Update"
+]  // 16 values — Follow/Unfollow/Accept were removed (see Activities gotchas)
 
 actorId: anyOf [ "@user@domain", "@domain" (server), "https?://..." (remote AP actor) ]
 
@@ -125,4 +125,4 @@ Three independent mechanisms, all checked before the handler runs (the first two
 
 ## Next
 
-Start with the type you need, or read them in order for the full picture: [Create](/docs/activities/create/) Β· [Update](/docs/activities/update/) Β· [Delete](/docs/activities/delete/) Β· [Reply](/docs/activities/reply/) Β· [React](/docs/activities/react/) Β· [Membership (Join/Leave/Add/Remove)](/docs/activities/membership/) Β· [Moderation (Block/Mute)](/docs/activities/moderation/) Β· [Federation (Follow/Undo/Announce)](/docs/activities/federation/) Β· [Flag](/docs/activities/flag/) Β· [Known gotchas](/docs/activities/gotchas/).
+Start with the type you need, or read them in order for the full picture: [Create](/docs/activities/create/) Β· [Update](/docs/activities/update/) Β· [Delete](/docs/activities/delete/) Β· [Reply](/docs/activities/reply/) Β· [React](/docs/activities/react/) Β· [Membership (Join/Leave/Add/Remove)](/docs/activities/membership/) Β· [Moderation (Block/Mute)](/docs/activities/moderation/) Β· [Undo & Announce](/docs/activities/undo-announce/) Β· [Flag](/docs/activities/flag/) Β· [Known gotchas](/docs/activities/gotchas/).
