@@ -1,0 +1,44 @@
+---
+title: Kowloon Developer Docs
+description: Architecture, the Activity API, REST endpoints, and the @kowloon/client library.
+template: splash
+hero:
+  tagline: How Kowloon is put together — for anyone building on it, including us.
+  actions:
+    - text: Architecture overview
+      link: /docs/architecture/
+      icon: right-arrow
+      variant: primary
+    - text: Activity API
+      link: /docs/activities/overview/
+      icon: right-arrow
+    - text: REST API
+      link: /docs/api/overview/
+      icon: right-arrow
+    - text: Client library
+      link: /docs/client/overview/
+      icon: right-arrow
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Kowloon is a federated social platform built on Circles instead of follower graphs, addressed content instead of per-post permission checks, and a single write door — `POST /outbox` — instead of a sprawling set of mutation endpoints. This section documents all of it, in as much detail as we could verify against the actual server, client library, and route source — not just the parts that make a good pitch.
+
+<CardGrid stagger>
+	<Card title="Architecture" icon="puzzle">
+		Circles, addressing (`to`/`canReply`/`canReact`), the write path, the `FeedItems` timeline cache, and federation in brief. Start here.
+	</Card>
+	<Card title="Activities" icon="setting">
+		Every Activity type Kowloon supports — envelope shape, required fields, real example payloads, side effects, and known gotchas for each one.
+	</Card>
+	<Card title="REST API" icon="rocket">
+		Every route the server exposes, grouped by resource — request/response shapes, auth rules, pagination, and where the surface is inconsistent.
+	</Card>
+	<Card title="Client Library" icon="seti:javascript">
+		`@kowloon/client` — the isomorphic Node/browser/React Native SDK. One page per sub-client, plus a gotchas page for the sharp edges.
+	</Card>
+</CardGrid>
+
+## A note on accuracy
+
+These docs are written from — and checked against — the real source, including the rough edges: dead code paths, broken client methods, inconsistent response shapes, and gotchas that aren't obvious from reading any single file in isolation. Where something is confirmed broken or behaves unexpectedly, it's called out directly rather than smoothed over. Each major section ends with a dedicated **Gotchas** page collecting exactly that.
