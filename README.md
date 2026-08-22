@@ -4,7 +4,7 @@ The open-source Kowloon app's home on the web: info, docs, FAQ, devlog, and the
 launch waitlist. Built with [Astro](https://astro.build) (static), docs via
 Starlight (to come), waitlist/newsletter via Kit (ConvertKit).
 
-Not the paid hosting platform — that lives in `kowloon-hosting` (later).
+Not the paid hosting platform -- that lives in `kowloon-hosting` (later).
 
 ## Develop
 

@@ -6,7 +6,7 @@
 //   - This is a one-time list, not a mailing platform. No campaigns, no
 //     third parties, no analytics.
 //   - Write-only. There is no route anywhere that reads the list back over
-//     HTTP, even internally — the only way to get emails out is `docker
+//     HTTP, even internally -- the only way to get emails out is `docker
 //     exec` into this container on the box itself.
 //   - Not reachable from the internet directly (no published port); Caddy
 //     is the only thing that can reach it, over Docker's internal network,
@@ -141,7 +141,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // Bot signals below are handled *silently* — a fake success, no
+  // Bot signals below are handled *silently* -- a fake success, no
   // indication anything was rejected, so a bot script has nothing to learn
   // from the response and no reason to adapt.
   const tooFast = loadedAt > 0 && Date.now() - loadedAt < MIN_FILL_MS;

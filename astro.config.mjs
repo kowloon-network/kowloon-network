@@ -7,9 +7,16 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   site: 'https://kowloon.network',
 
+  // Astro's default markdown pipeline auto-converts straight quotes/hyphens
+  // to curly quotes/en-dashes ("smartypants") -- disabled so docs content
+  // renders as the literal ASCII it's written in.
+  markdown: {
+    smartypants: false,
+  },
+
   vite: {
     server: {
-      // Dev-only convenience — mirrors the Caddyfile's production route to
+      // Dev-only convenience -- mirrors the Caddyfile's production route to
       // the waitlist sidecar (`node waitlist/server.js`, default :8090), so
       // `astro dev` can exercise the real form without the full Docker
       // stack. Doesn't affect the production build at all.
@@ -23,7 +30,7 @@ export default defineConfig({
     starlight({
       title: 'Kowloon Docs',
       description:
-        'Developer documentation for Kowloon — architecture, the Activity API, REST endpoints, and the @kowloon/client library.',
+        'Developer documentation for Kowloon -- architecture, the Activity API, REST endpoints, and the @kowloon/client library.',
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/kowloon-network' },
       ],
