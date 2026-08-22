@@ -19,7 +19,12 @@ POST /outbox
   → optionally enqueue federation
 ```
 
-There is a second, semi-duplicate entry point — `activity.parse()` in `ActivityParser/index.js` — used by inbound federation processing. It runs effectively the same validate → dispatch → federate sequence and calls the same handlers. If you're only building against the client-facing API, you can ignore this; it's mentioned here so the two code paths in the server don't look like a bug if you go reading source.
+`ActivityParser/index.js` itself is just the handler-loading factory: it scans `handlers/` and auto-registers each subfolder's default-exported function under its directory name, no central list to maintain. Adding a new handler *function* really is just dropping a new `handlers/Whatever/index.js` — but making that type reachable via `POST /outbox` still requires adding it to `activity.schema.js`'s `type` enum by hand, since `createActivity()` validates against that central schema before it ever looks up a handler.
+
+### Two layers of validation
+
+1. **Schema-level, once, centrally.** `createActivity()` validates the whole envelope against `activity.schema.js` (AJV) before dispatching anywhere — envelope shape, `type` enum membership, the addressing grammar, and (for `Create`/`Reply`/`React` specifically) extra conditional rules like requiring `object.type`.
+2. **Business-logic, inside each handler, on itself.** Several handlers (`Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Announce`, `Undo`) export their own `validate(activity)` function and call it on themselves at the top of their default export, before doing any work. The rest (`Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Flag`) skip the separate named function and just do inline guard checks through the handler body — same effect, less ceremony. This layer covers what AJV can't express: does the target actually exist, is the actor allowed to do this, does a reason code match a configured option.
 
 ## What happens before validation
 

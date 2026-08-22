@@ -47,7 +47,11 @@ Every Activity type — `Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, 
 
 `FeedItems` is a read-optimized fan-out cache, not a source of truth. When a Post, Reply, Page, Group, or Circle is created or updated through the normal Activity pipeline, the handler calls `writeFeedItems()` to keep a denormalized, timeline-friendly copy in sync — this is what powers `GET /posts`, circle timelines, and group feeds without expensive joins on every read.
 
-The important consequence: **anything that writes to a model directly (`Model.create()`, `findOneAndUpdate()` outside a handler) bypasses `FeedItems` entirely** and will not show up in feeds until something else backfills it. If you're building server-side tooling that needs to appear in a timeline, go through the Activity pipeline (`POST /outbox` or the internal `createActivity()`/`activity.parse()` call), not the model directly.
+The important consequence: **anything that writes to a model directly (`Model.create()`, `findOneAndUpdate()` outside a handler) bypasses `FeedItems` entirely** and will not show up in feeds until something else backfills it. If you're building server-side tooling that needs to appear in a timeline, go through the Activity pipeline (`POST /outbox` or the internal `createActivity()` call), not the model directly.
+
+:::note[Removed: activity.parse()]
+`ActivityParser/index.js` used to export a second, semi-duplicate entry point -- `.parse()` -- with its own validate-dispatch-federate sequence, including a full separate reimplementation of outbound federation delivery. It was never actually called by anything in the app (both `/outbox` and `/inbox` have always gone through `createActivity()`), and has been removed along with the now-orphaned per-handler `schema.js` files it was the only reader of. See [The Activity Envelope](/docs/activities/overview/) for how validation actually works.
+:::
 
 Bookmarks are the one addressable type deliberately excluded from `FeedItems` — they're personal-only and never appear in any feed (see [Create → Bookmark](/docs/activities/create/#bookmark)).
 
