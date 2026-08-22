@@ -88,7 +88,7 @@ Derived from `targetCircle.actorId`'s shape:
 - User circles get their auto mosaic icon regenerated (fire-and-forget).
 
 :::note[Mongoose array gotcha, documented in-code]
-Federation recipients for remote members are carried via the returned `federation` object, deliberately *not* by overwriting `activity.to` with an array -- `to` is a plain `String` on the Activity schema, and assigning an array of member IDs previously broke with a Mongoose cast error when adding two or more remote members at once.
+Federation recipients for remote members are carried via the returned `federation` object, deliberately *not* by overwriting `activity.to` with an array -- `to` is a plain `String` on the Activity schema, so assigning an array of member IDs would cause a Mongoose cast error when adding two or more remote members at once.
 :::
 
 ### Remove -- side effects

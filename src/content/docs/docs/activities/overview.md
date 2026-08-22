@@ -46,24 +46,20 @@ type: enum [
   "Add", "Block", "Create", "Delete", "Flag",
   "Join", "Leave", "Mute", "React", "Remove", "Reply",
   "Unblock", "Undo", "Unmute", "Update"
-]  // 15 values -- Follow/Unfollow/Accept and Announce were removed (see Activities gotchas)
+]  // 15 values
 
 actorId: anyOf [ "@user@domain", "@domain" (server) ]  // always this format -- local AND remote actors, no exceptions
 
 objectType: enum [
-  "Bookmark", "Circle", "Delete", "Group", "Page",
+  "Bookmark", "Circle", "Group", "Page",
   "Post", "React", "Reply", "User"
-]  // 9 values -- broader than any single handler actually accepts, see below
+]  // 8 values
 
 object: {}       // untyped at the schema level; each handler validates its own shape
 target: { type: "string" }
 summary: { type: "string" }
 to / canReply / canReact: "replyReactRecipient" schema (see below)
 ```
-
-:::note
-The top-level `objectType` enum includes `"Delete"` as an allowed value, but no handler's internal type-map (`Create`'s or `Update`'s `MODELS`) actually accepts it -- sending it would pass AJV validation and then fail inside the handler with an "unsupported objectType" error. Harmless, but don't take the schema enum as a promise that a given `objectType` is meaningful for a given `type`.
-:::
 
 ### Addressing value grammars
 

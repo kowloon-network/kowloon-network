@@ -111,12 +111,8 @@ These manage the server's admin/mod circles **directly** -- deliberately bypassi
 
 **Logs** -- `GET /system/logs?tail=&level=` -- tails the app log file, capped at 2000 lines.
 
-:::note[Sync backup removed]
-`GET /system/backup` -- a synchronous full-DB JSON export that blocked the request until the entire database was serialized in memory -- has been removed in favor of the async job queue below, which also archives S3-stored files (not just Mongo documents) and doesn't block the event loop.
-:::
-
 ## `/admin/backup`
-Async backup/restore job queue, backed by `BackupJob` plus S3/MinIO archive storage. Requires a separate worker process (`workers/backup.js`) to actually run jobs -- see the note below.
+Async backup/restore job queue, backed by `BackupJob` plus S3/MinIO archive storage, that also archives S3-stored files (not just Mongo documents) without blocking the event loop. Requires a separate worker process (`workers/backup.js`) to actually run jobs -- see the note below.
 
 - `POST /` -- queues a backup job. `409` if one's already running.
 - `GET /` -- lists the last 20 jobs.

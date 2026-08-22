@@ -20,10 +20,11 @@ This page covers behavior that applies across the whole REST API, so the per-res
 
 `middleware` and `utils` subdirectories are explicitly skipped -- they're not routes.
 
-Two introspection/dev endpoints live at the top level of this mount:
+One introspection endpoint lives at the top level of this mount:
 
 - **`GET /__routes`** -- no auth. Dumps `{ total, routes: [{ methods, path }] }` for every mounted route except itself.
-- **`POST /__test/wipe`** -- mounted **only when `NODE_ENV !== "production"`**. Wipes every Mongo collection except `settings`. No auth required -- the production gate is the only thing stopping this from being catastrophic, so never let `NODE_ENV` drift from `production` on a real deployment.
+
+To wipe a test database, connect to Mongo directly (`mongosh <MONGO_URI> --eval 'db.dropDatabase()'`) or use `scripts/wipe.js --runId=<id>` for a scoped wipe.
 
 ## Body parsing (parsed three times)
 
@@ -136,9 +137,7 @@ Not every collection endpoint is page-numbered -- a couple of endpoints are curs
 - **`GET /circles/:id/posts`** -- the primary circle timeline. `{ "@context", type: "OrderedCollectionPage", id, partOf, totalItems, orderedItems, next?, nextCursor? }` -- cursor-based (`?before=`), since a live-updating feed doesn't have stable page numbers. `next` is a full URL embedding the cursor; `nextCursor` is kept alongside it for existing clients that read the raw cursor value directly.
 - **`GET /outbox`**'s batch-pull and legacy S2S pull modes (federation-only, not meant for general API consumers) -- already `@context`/`type: "OrderedCollection"`/`totalItems`/`orderedItems`-shaped, but use a `next` cursor (an ISO timestamp for incremental `?since=` pulls) instead of a page URL, and batch-pull mode adds `recipients`/`tombstones` fields specific to the multi-recipient federation-sync protocol it implements. This is a deliberate protocol extension, not a shape bug -- see the Federation docs.
 
-`GET /files` previously returned a bespoke `{ files, total, page, limit, pages }` object; it's now built on `makeCollection()` like every other page-numbered list endpoint and returns the standard shape.
-
-Aside from the two cursor-based cases above, every list endpoint uses the standard `orderedItems` + `totalItems` + `currentPage` shape.
+Aside from the two cursor-based cases above, every list endpoint -- including `GET /files` -- uses the standard `orderedItems` + `totalItems` + `currentPage` shape.
 :::
 
 ## Rate limiting
@@ -197,5 +196,3 @@ Not HTTP routes, but started alongside the HTTP server and relevant to understan
 ## Health checks
 
 `GET /health` is served by the auto-mounted `routes/health` router -- CORS-open (`Access-Control-Allow-Origin: *`, so the install wizard can poll it cross-origin) and returns `503` on a disconnected DB. See [Config, Health, Themes, Push & Recommendations](/docs/api/misc/#health) for the full response shape.
-
-This endpoint used to be defined twice -- a duplicate, shadowed handler in `index.js` plus an unreferenced `/__health` alias alongside it -- with genuine ambiguity about which one actually answered requests. Confirmed by direct testing: the router always won. Both dead handlers were removed; the router above is now the only implementation.

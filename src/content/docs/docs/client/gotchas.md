@@ -30,4 +30,4 @@ All four take a bare string. Everything else on those same sub-clients (`FilesCl
 
 ## Related
 
-- [Activities gotchas](/docs/activities/gotchas/) -- server-side Activity-type fixes and removals (Upload, deleteReact/rejectJoinRequest, the Follow/Unfollow/Accept removal) that these client-side issues connect to.
+- [Activities gotchas](/docs/activities/gotchas/) -- the server-side counterpart to this page.

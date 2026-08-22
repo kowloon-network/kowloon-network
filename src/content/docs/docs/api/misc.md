@@ -18,8 +18,6 @@ Unauthenticated. Public runtime config for frontend bootstrapping:
 ### `GET /health`
 CORS-open (`Access-Control-Allow-Origin: *`, so the setup wizard can poll it cross-origin during install) liveness check. Returns `200` with `{ status: "ok", timestamp, services: { mongodb: "connected" } }`, or `503` with `status: "error"` if MongoDB is disconnected.
 
-This used to be defined twice (a duplicate top-level handler in `index.js`, plus this router) with an unresolved question of which one actually answered requests. Confirmed by direct testing and consolidated: the router above always won route resolution, so the duplicate (and the unreferenced `/__health` alias alongside it) was removed. `/health` is now the only handler and the only path.
-
 ## Themes (`/themes/*`)
 
 Three built-in themes (`system`, `kowloon-light`, `kowloon-dark`) are seeded on module load if missing, and the seed self-heals -- any previously-seeded `author: "system"` theme no longer in the current built-in list is deleted automatically. Custom admin-authored themes are never touched by this.
