@@ -24,7 +24,7 @@ POST /outbox
 ### Two layers of validation
 
 1. **Schema-level, once, centrally.** `createActivity()` validates the whole envelope against `activity.schema.js` (AJV) before dispatching anywhere -- envelope shape, `type` enum membership, the addressing grammar, and (for `Create`/`Reply`/`React` specifically) extra conditional rules like requiring `object.type`.
-2. **Business-logic, inside each handler, on itself.** Several handlers (`Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Announce`, `Undo`) export their own `validate(activity)` function and call it on themselves at the top of their default export, before doing any work. The rest (`Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Flag`) skip the separate named function and just do inline guard checks through the handler body -- same effect, less ceremony. This layer covers what AJV can't express: does the target actually exist, is the actor allowed to do this, does a reason code match a configured option.
+2. **Business-logic, inside each handler, on itself.** Several handlers (`Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Undo`) export their own `validate(activity)` function and call it on themselves at the top of their default export, before doing any work. The rest (`Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Flag`) skip the separate named function and just do inline guard checks through the handler body -- same effect, less ceremony. This layer covers what AJV can't express: does the target actually exist, is the actor allowed to do this, does a reason code match a configured option.
 
 ## What happens before validation
 
@@ -33,7 +33,7 @@ POST /outbox
 - **Auth.** `POST /outbox` requires a JWT-authenticated user for every Activity **except** `Create` with `objectType: "User"` (or `object.type` of `User`/`Person`) -- that's the account-registration path, and it runs unauthenticated with `activity.actorId` force-set to the server's own actor (`@<domain>`).
 - For every other request, **`activity.actorId` is always overwritten** with the JWT user's id. A client cannot spoof `actorId`.
 - `activity.actor` (the embedded actor snapshot) is auto-populated from the JWT user if the client didn't send one: `{ id, type, name, icon, url, inbox, outbox, server }`.
-- `to`/`canReply`/`canReact` default to `""` if absent -- on both the activity itself and, for every type except `Update`/`Delete`, on `activity.object` too. (`Update`/`Delete` treat `object` as a patch, not a fresh object, so they're deliberately skipped here.)
+- `to`/`canReply`/`canReact` default to **the actor's own id** if absent -- on both the activity itself and, for every type except `Update`/`Delete`, on `activity.object` too. (`Update`/`Delete` treat `object` as a patch, not a fresh object, so they're deliberately skipped here.) This makes the safe default actually private: `canSeeObject()` treats an empty/missing `to` as *server-wide* visible, so before this default was in place, omitting `to` silently meant "visible to everyone on the server," not "private." Addressing something only to its own creator's id falls through every other visibility check to `return false`, so nobody but the owner (who's always allowed to see their own content) can see it.
 - Shorthand values are expanded: `"public"` -> `"@public"`, `"server"` -> `"@<domain>"`.
 - `outboxRateLimiter` and `activityDeduplicator` middleware run before the handler (see [Idempotency](#idempotency) below).
 
@@ -43,17 +43,17 @@ Validated with AJV against `activity.schema.js` (`https://kwln.org/activity.sche
 
 ```js
 type: enum [
-  "Add", "Announce", "Block", "Create", "Delete", "Flag",
+  "Add", "Block", "Create", "Delete", "Flag",
   "Join", "Leave", "Mute", "React", "Remove", "Reply",
   "Unblock", "Undo", "Unmute", "Update"
-]  // 16 values -- Follow/Unfollow/Accept were removed (see Activities gotchas)
+]  // 15 values -- Follow/Unfollow/Accept and Announce were removed (see Activities gotchas)
 
-actorId: anyOf [ "@user@domain", "@domain" (server), "https?://..." (remote AP actor) ]
+actorId: anyOf [ "@user@domain", "@domain" (server) ]  // always this format -- local AND remote actors, no exceptions
 
 objectType: enum [
-  "Announce", "Bookmark", "Circle", "Delete", "Group", "Page",
+  "Bookmark", "Circle", "Delete", "Group", "Page",
   "Post", "React", "Reply", "User"
-]  // 10 values -- broader than any single handler actually accepts, see below
+]  // 9 values -- broader than any single handler actually accepts, see below
 
 object: {}       // untyped at the schema level; each handler validates its own shape
 target: { type: "string" }
@@ -62,7 +62,7 @@ to / canReply / canReact: "replyReactRecipient" schema (see below)
 ```
 
 :::note
-The top-level `objectType` enum includes `"Announce"` and `"Delete"` as allowed values, but no handler's internal type-map (`Create`'s or `Update`'s `MODELS`) actually accepts either -- sending one would pass AJV validation and then fail inside the handler with an "unsupported objectType" error. Harmless, but don't take the schema enum as a promise that a given `objectType` is meaningful for a given `type`.
+The top-level `objectType` enum includes `"Delete"` as an allowed value, but no handler's internal type-map (`Create`'s or `Update`'s `MODELS`) actually accepts it -- sending it would pass AJV validation and then fail inside the handler with an "unsupported objectType" error. Harmless, but don't take the schema enum as a promise that a given `objectType` is meaningful for a given `type`.
 :::
 
 ### Addressing value grammars
@@ -130,4 +130,4 @@ Three independent mechanisms, all checked before the handler runs (the first two
 
 ## Next
 
-Start with the type you need, or read them in order for the full picture: [Create](/docs/activities/create/) | [Update](/docs/activities/update/) | [Delete](/docs/activities/delete/) | [Reply](/docs/activities/reply/) | [React](/docs/activities/react/) | [Membership (Join/Leave/Add/Remove)](/docs/activities/membership/) | [Moderation (Block/Mute)](/docs/activities/moderation/) | [Undo & Announce](/docs/activities/undo-announce/) | [Flag](/docs/activities/flag/) | [Known gotchas](/docs/activities/gotchas/).
+Start with the type you need, or read them in order for the full picture: [Create](/docs/activities/create/) | [Update](/docs/activities/update/) | [Delete](/docs/activities/delete/) | [Reply](/docs/activities/reply/) | [React](/docs/activities/react/) | [Membership (Join/Leave/Add/Remove)](/docs/activities/membership/) | [Moderation (Block/Mute)](/docs/activities/moderation/) | [Undo](/docs/activities/undo/) | [Flag](/docs/activities/flag/) | [Known gotchas](/docs/activities/gotchas/).

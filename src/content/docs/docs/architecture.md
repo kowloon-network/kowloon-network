@@ -41,7 +41,7 @@ All writes go through one door: `POST /outbox`, with an **Activity envelope** --
 3. `ActivityParser` dispatches to exactly one handler based on `activity.type` (for most types) or by parsing the `target` ID's prefix (for `Update`/`Delete`).
 4. The handler does the actual work -- creating/mutating documents, updating `FeedItems`, firing notifications, deciding what (if anything) to federate -- and returns a result that becomes the HTTP response.
 
-Every Activity type -- `Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Undo`, `Announce`, `Flag` -- has its own handler under `ActivityParser/handlers/`. The full envelope shape, validation rules, and per-type behavior are covered starting at [Activities -> Overview](/docs/activities/overview/).
+Every Activity type -- `Create`, `Update`, `Delete`, `Reply`, `React`, `Join`, `Leave`, `Add`, `Remove`, `Block`, `Unblock`, `Mute`, `Unmute`, `Undo`, `Flag` -- has its own handler under `ActivityParser/handlers/`. The full envelope shape, validation rules, and per-type behavior are covered starting at [Activities -> Overview](/docs/activities/overview/).
 
 ## FeedItems: the timeline cache
 
