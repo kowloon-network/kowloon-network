@@ -22,7 +22,7 @@ This used to be defined twice (a duplicate top-level handler in `index.js`, plus
 
 ## Themes (`/themes/*`)
 
-Three built-in themes (`system`, `kowloon-light`, `kowloon-dark`) are seeded on module load if missing, and the seed self-heals — any previously-seeded `author: "system"` theme no longer in the current built-in list is deleted automatically. Custom admin-authored themes are never touched by this.
+Three built-in themes (`system`, `kowloon-light`, `kowloon-dark`) are seeded on module load if missing, and the seed self-heals -- any previously-seeded `author: "system"` theme no longer in the current built-in list is deleted automatically. Custom admin-authored themes are never touched by this.
 
 ### `GET /themes`
 Public. Returns all themes (built-in ones first) plus `defaultThemeId`.
@@ -38,13 +38,13 @@ Admin only (`401`/`403`). Body:
 `id`/`name`/`colorScheme` required. `409` on duplicate `id`.
 
 ### `PUT /themes/:id`
-Admin only. `403` if the target is a built-in theme — **built-ins are immutable**. Whitelisted fields: `name`, `description`, `colorScheme`, `colors`, `postColors`.
+Admin only. `403` if the target is a built-in theme -- **built-ins are immutable**. Whitelisted fields: `name`, `description`, `colorScheme`, `colors`, `postColors`.
 
 ### `DELETE /themes/:id`
 Admin only. `403` if built-in.
 
 ### `PATCH /themes/default`
-Admin only. Body `{ themeId }` — must reference an existing theme. Sets the `defaultTheme` setting.
+Admin only. Body `{ themeId }` -- must reference an existing theme. Sets the `defaultTheme` setting.
 
 ## Push (`/push/*`)
 
@@ -53,23 +53,23 @@ Auth required. Body:
 ```json
 { "token": "...", "provider": "expo", "platform": "android" }
 ```
-(`provider` defaults to `"expo"` — the other accepted value is `"native"`; `platform` defaults to `"android"`, also accepts `"ios"`/`"web"`.)
+(`provider` defaults to `"expo"` -- the other accepted value is `"native"`; `platform` defaults to `"android"`, also accepts `"ios"`/`"web"`.)
 
-Upserts **by token** — one row per device. Re-registering the same token under a different user reassigns ownership, which is what makes device account-switching work correctly. `400` missing `token`.
+Upserts **by token** -- one row per device. Re-registering the same token under a different user reassigns ownership, which is what makes device account-switching work correctly. `400` missing `token`.
 
 ### `POST /push/unregister`
 Auth required. Body `{ token }`. Deletes the token row, scoped to the current user.
 
 ## Recommendations (`/recommendations`)
 
-The public "Discover" surface — see also [`project_recommendations_discover`](https://kowloon.network) internal notes if you're the server operator curating shelves via [`/admin/recommendations`](/docs/api/admin/#adminrecommendations--adminsections).
+The public "Discover" surface -- see also [`project_recommendations_discover`](https://kowloon.network) internal notes if you're the server operator curating shelves via [`/admin/recommendations`](/docs/api/admin/#adminrecommendations--adminsections).
 
 ### `GET /recommendations`
 Unauthenticated OK. Returns active `RecommendationSection`s in order, each resolved to its live, currently-visible items.
 
-Curated `Recommendation` references are resolved against `Post` (via `FeedItems`), `Circle`, `Group`, `Bookmark`, `Page`, or `FederatedServer`. Items whose target was deleted, or whose visibility narrowed since curation, are **silently dropped** — nothing about a recommendation is snapshotted except the tier it had at add-time; the live object is always the source of truth at read time.
+Curated `Recommendation` references are resolved against `Post` (via `FeedItems`), `Circle`, `Group`, `Bookmark`, `Page`, or `FederatedServer`. Items whose target was deleted, or whose visibility narrowed since curation, are **silently dropped** -- nothing about a recommendation is snapshotted except the tier it had at add-time; the live object is always the source of truth at read time.
 
-Viewer-aware tiering matches [`/posts`](/docs/api/posts/)/[`/circles`](/docs/api/circles/) — local-authenticated sees public+server, everyone else sees public only.
+Viewer-aware tiering matches [`/posts`](/docs/api/posts/)/[`/circles`](/docs/api/circles/) -- local-authenticated sees public+server, everyone else sees public only.
 
 Sections with `source: "hybrid"` or `"heuristic"` and a `contentType` get algorithmic backfill (`getHeuristicPicks`) up to `targetCount`, excluding already-curated refs. Empty shelves (nothing curated and nothing to backfill) are omitted from the response entirely, rather than returned empty.
 

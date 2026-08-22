@@ -2,7 +2,7 @@
 // Base HTML shell + brand tokens. Every page wraps its content in this.
 const {
   title = 'Kowloon',
-  description = 'Kowloon — a different kind of social network. Circles, not followers. No algorithm. Own your words.',
+  description = 'Kowloon -- a different kind of social network. Circles, not followers. No algorithm. Own your words.',
 } = Astro.props;
 ---
 
@@ -31,7 +31,7 @@ const {
         --ink: #1a1a20;
         --paper: #ffffff;
 
-        /* Theme tokens — dark by default, overridden below for light. The
+        /* Theme tokens -- dark by default, overridden below for light. The
            page chrome follows the same prefers-color-scheme signal the
            Splash scene reacts to in JS, so a dark OS gets the night scene
            + white-on-black chrome, and light gets the day scene + this
@@ -47,7 +47,7 @@ const {
         --topbar-bg: rgba(0, 0, 0, 0.72);
         --shadow: rgba(0, 0, 0, 0.28);
         /* The bold solid CTA pill (.cta, and the hover fill on outline
-           buttons) is a brand accent, not just "inverted page background" —
+           buttons) is a brand accent, not just "inverted page background" --
            reusing --fg for it would make it a heavy black pill in light
            mode. It swaps which of paper/klein is fill vs. text instead, so
            it's always a strong two-tone pop: white pill/blue text in dark,

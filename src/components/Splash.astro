@@ -4,7 +4,7 @@
 // drifting p5.js cloud layer and a flickering night-window effect.
 //
 // The two scenes are full illustrations exported as standalone SVGs (see
-// src/assets/splash/) and inlined here via a raw import so window1–window8
+// src/assets/splash/) and inlined here via a raw import so window1--window8
 // stay addressable by id for the flicker effect, without keeping thousands
 // of lines of markup in this file.
 import nightSceneSvg from '../assets/splash/night-scene.svg?raw';
@@ -39,7 +39,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
     function pickScene() {
       if (darkMq.matches) return 'night';
       if (lightMq.matches) return 'day';
-      // Browser reports no OS preference — fall back to local time.
+      // Browser reports no OS preference -- fall back to local time.
       var hour = new Date().getHours();
       return hour >= 6 && hour < 20 ? 'day' : 'night';
     }
@@ -61,14 +61,14 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
     darkMq.addEventListener('change', applyScene);
     lightMq.addEventListener('change', applyScene);
 
-    // Clouds — p5.js sketch, layered behind the scene SVGs. Reads
+    // Clouds -- p5.js sketch, layered behind the scene SVGs. Reads
     // `cloudColor` on every frame, so it follows scene changes live.
     //
-    // A plane rarely drifts across the same canvas, always at a fixed 45°
+    // A plane rarely drifts across the same canvas, always at a fixed 45 deg
     // to the northwest (lower-right to upper-left), with a randomized start
     // Y/scale/speed each time. It's drawn after the clouds so it renders
-    // above them, and — since this whole canvas sits below the building
-    // SVGs in z-index — automatically behind the buildings too.
+    // above them, and -- since this whole canvas sits below the building
+    // SVGs in z-index -- automatically behind the buildings too.
     //
     // Drop the real artwork at public/splash/plane.svg and this switches
     // from the placeholder triangle to it automatically, no code changes.
@@ -79,37 +79,37 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
       var planeImg = null;
       var planeReady = false;
       var planeBaseW = 130; // recomputed from canvas width in setup()
-      var planeSpeedMult = 1; // halved on mobile in setup() — see below
+      var planeSpeedMult = 1; // halved on mobile in setup() -- see below
 
       var PLANE_ASPECT = 2334 / 2030; // native plane.svg viewBox
       // Below this canvas width the plane reads as noticeably faster than
-      // on desktop, even with its size already scaled down — a smaller
+      // on desktop, even with its size already scaled down -- a smaller
       // plane at the same absolute px/frame speed covers proportionally
       // more of a narrower canvas per second. 720px matches this page's
       // existing mobile breakpoint (see index.astro's .principles grid).
       var PLANE_MOBILE_BREAKPOINT = 720;
-      // Fraction of canvas width the plane's base size is drawn at — this
+      // Fraction of canvas width the plane's base size is drawn at -- this
       // must scale with the canvas, not be a fixed pixel value. At a fixed
-      // 45° climb, the plane's own width is how much vertical "headroom" it
+      // 45 deg climb, the plane's own width is how much vertical "headroom" it
       // burns just entering the frame from off-screen right. On a narrow
       // (mobile) canvas that headroom cost was swallowing the whole flight
       // before it ever became visible, so the plane appeared to never show
       // up at all on phones.
       var PLANE_WIDTH_RATIO = 0.093;
-      // Start Y range, as a fraction of canvas height — deliberately wider
+      // Start Y range, as a fraction of canvas height -- deliberately wider
       // than the canvas itself (negative = starts above the top edge,
       // >1 = starts below the bottom edge) so successive flights vary in
       // vertical position instead of always tracing roughly the same
       // upper-right arc. A flight that starts high exits almost
       // immediately near the top; one that starts low sweeps further
-      // across the frame before climbing out — both are fine.
+      // across the frame before climbing out -- both are fine.
       var PLANE_Y_MIN_RATIO = -0.3;
       var PLANE_Y_MAX_RATIO = 1.3;
       var PLANE_SPEED_MIN = 1.6;
       var PLANE_SPEED_MAX = 2.3;
       var PLANE_MIN_DELAY_MS = 10000;
       var PLANE_MAX_DELAY_MS = 30000;
-      // Fixed 45° to the northwest — no rotation logic, ever. The artwork
+      // Fixed 45 deg to the northwest -- no rotation logic, ever. The artwork
       // is a perspective illustration already drawn in its one flight
       // attitude, not a silhouette meant to be rotated to face a heading.
       var PLANE_VX = -Math.SQRT1_2;
@@ -168,7 +168,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
         p.noStroke();
         planeBaseW = p.width * PLANE_WIDTH_RATIO;
         planeSpeedMult = p.width < PLANE_MOBILE_BREAKPOINT ? 0.5 : 1;
-        // Sized as a fraction of canvas width, not a fixed pixel range —
+        // Sized as a fraction of canvas width, not a fixed pixel range --
         // on narrow (mobile) viewports a 400px cloud used to swallow the
         // whole sky. Max 20% of width keeps the same relative variety at
         // every screen size.
@@ -195,7 +195,7 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
           if (c.x - c.size > p.width) c.x = -c.size;
         }
 
-        // Day scene only — if the scene switches to night mid-flight (a
+        // Day scene only -- if the scene switches to night mid-flight (a
         // live OS-theme change), drop the plane immediately.
         if (currentSceneId !== 'day') {
           plane = null;
@@ -214,8 +214,8 @@ import daySceneSvg from '../assets/splash/day-scene.svg?raw';
       };
     });
 
-    // Window flicker — night scene only; harmless no-op when day is active
-    // since window1–window8 don't exist in the day scene.
+    // Window flicker -- night scene only; harmless no-op when day is active
+    // since window1--window8 don't exist in the day scene.
     var flickerColors = ['#dd308c', '#1b0360'];
     setInterval(function () {
       for (var i = 1; i <= 8; i++) {

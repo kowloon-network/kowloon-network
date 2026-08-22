@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Splash from '../components/Splash.astro';
 ---
 
-<Base title="Kowloon — a social network built on circles, not followers">
+<Base title="Kowloon -- a social network built on circles, not followers">
   <header class="topbar">
     <span class="brand">KOWLOON</span>
     <nav class="topbar-nav">
@@ -206,7 +206,7 @@ import Splash from '../components/Splash.astro';
           required
         />
         <button type="submit" class="cta">Join the waitlist &rarr;</button>
-        <!-- Honeypot — invisible to real visitors, left blank by them.
+        <!-- Honeypot -- invisible to real visitors, left blank by them.
              Bots that fill in every field trip it; caught silently
              server-side, not with display:none (some bots skip that). -->
         <span class="waitlist-hp" aria-hidden="true">
@@ -632,7 +632,7 @@ import Splash from '../components/Splash.astro';
     const emailInput = document.getElementById('waitlist-email');
     const companyInput = document.getElementById('waitlist-company');
     const button = form.querySelector('button[type="submit"]');
-    // Roughly "page load" — used server-side as a minimum-fill-time bot
+    // Roughly "page load" -- used server-side as a minimum-fill-time bot
     // check, so it just needs to predate any realistic human submission.
     const loadedAt = Date.now();
 
@@ -643,7 +643,7 @@ import Splash from '../components/Splash.astro';
 
       const originalLabel = button.textContent;
       button.disabled = true;
-      button.textContent = 'Joining…';
+      button.textContent = 'Joining...';
 
       try {
         const res = await fetch('/api/waitlist', {
@@ -660,11 +660,11 @@ import Splash from '../components/Splash.astro';
           form.reset();
           alert("You're on the list. We'll email you when it's time.");
         } else {
-          status.textContent = data.error || 'Something went wrong — try again.';
+          status.textContent = data.error || 'Something went wrong -- try again.';
           status.classList.add('is-error');
         }
       } catch {
-        status.textContent = 'Something went wrong — try again.';
+        status.textContent = 'Something went wrong -- try again.';
         status.classList.add('is-error');
       } finally {
         button.disabled = false;

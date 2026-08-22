@@ -5,7 +5,7 @@ sidebar:
   order: 99
 ---
 
-A single, scannable list of the real inconsistencies and bugs found while researching this library — the kind of thing you want to remember exists rather than rediscover by debugging. Each one is confirmed against the actual source, not inferred.
+A single, scannable list of the real inconsistencies and bugs found while researching this library -- the kind of thing you want to remember exists rather than rediscover by debugging. Each one is confirmed against the actual source, not inferred.
 
 :::caution[Bare-string-id methods break the options-object convention]
 Almost everything in this library takes a single options object (`{ postId, content }`, not positional args). A handful of methods don't:
@@ -17,7 +17,7 @@ All four take a bare string. Everything else on those same sub-clients (`FilesCl
 :::
 
 :::caution[Multipart calls bypass HttpClient and its error normalization]
-`FilesClient.upload()`, `AdminClient.restoreFromFile()`, and `AdminClient.backupDownloadUrl()` skip `HttpClient` and either build a raw `fetch()` multipart request or just build a URL directly — `HttpClient` always JSON-stringifies its request body, which doesn't work for `FormData`. A practical consequence: errors from an upload or restore call are **not guaranteed to arrive as a `KowloonError` subclass** the way errors from every other method are. If you're writing generic error-handling that pattern-matches on the `KowloonError` hierarchy, add a plain-`Error` fallback specifically around these calls.
+`FilesClient.upload()`, `AdminClient.restoreFromFile()`, and `AdminClient.backupDownloadUrl()` skip `HttpClient` and either build a raw `fetch()` multipart request or just build a URL directly -- `HttpClient` always JSON-stringifies its request body, which doesn't work for `FormData`. A practical consequence: errors from an upload or restore call are **not guaranteed to arrive as a `KowloonError` subclass** the way errors from every other method are. If you're writing generic error-handling that pattern-matches on the `KowloonError` hierarchy, add a plain-`Error` fallback specifically around these calls.
 :::
 
 :::danger[`updatePost`'s `content` field is remapped, not passed through]
@@ -25,9 +25,9 @@ All four take a bare string. Everything else on those same sub-clients (`FilesCl
 :::
 
 :::caution[`createInvite` has an exact field-name requirement]
-`client.admin.createInvite({ email, maxRedemptions, ... })` — a code comment in the client itself warns that an earlier version used `recipient`/`amount` instead, which the server silently dropped (unrecognized fields, no error), shipping invites with no recipient email and no redemption cap. Use `email`/`maxRedemptions` exactly.
+`client.admin.createInvite({ email, maxRedemptions, ... })` -- a code comment in the client itself warns that an earlier version used `recipient`/`amount` instead, which the server silently dropped (unrecognized fields, no error), shipping invites with no recipient email and no redemption cap. Use `email`/`maxRedemptions` exactly.
 :::
 
 ## Related
 
-- [Activities gotchas](/docs/activities/gotchas/) — server-side Activity-type fixes and removals (Upload, deleteReact/rejectJoinRequest, the Follow/Unfollow/Accept removal) that these client-side issues connect to.
+- [Activities gotchas](/docs/activities/gotchas/) -- server-side Activity-type fixes and removals (Upload, deleteReact/rejectJoinRequest, the Follow/Unfollow/Accept removal) that these client-side issues connect to.

@@ -19,7 +19,7 @@ Four structurally identical handlers, each operating on the actor's own `circles
 `target` accepts `@user@domain`, a bare `@domain` server handle, or any DB-resolvable ID.
 
 :::note[Bare `@domain` gets special-cased on Unblock/Unmute]
-`Unblock`/`Unmute` skip the normal actor lookup entirely for a bare `@domain` server ID and use the literal string as the member ID for the `$pull`. Going through the normal lookup for a single-`@` id would incorrectly resolve to the *server's own actor* rather than the domain being unblocked β€” this is an explicit, in-code workaround, not an oversight.
+`Unblock`/`Unmute` skip the normal actor lookup entirely for a bare `@domain` server ID and use the literal string as the member ID for the `$pull`. Going through the normal lookup for a single-`@` id would incorrectly resolve to the *server's own actor* rather than the domain being unblocked -- this is an explicit, in-code workaround, not an oversight.
 :::
 
 None of these four federate (`federate: false` always), and none create notifications.
@@ -30,4 +30,4 @@ None of these four federate (`federate: false` always), and none create notifica
 
 ## Client mapping
 
-`block`/`unblock`/`mute`/`unmute` all match `{ type, objectType: "User", target: userId }` β€” note `objectType` is sent by the client but unused by these handlers (they don't validate or dispatch on it). All four also call `this.moderation?.invalidate()` client-side to bust a local cache after success.
+`block`/`unblock`/`mute`/`unmute` all match `{ type, objectType: "User", target: userId }` -- note `objectType` is sent by the client but unused by these handlers (they don't validate or dispatch on it). All four also call `this.moderation?.invalidate()` client-side to bust a local cache after success.

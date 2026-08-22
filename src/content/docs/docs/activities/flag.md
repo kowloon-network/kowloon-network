@@ -15,7 +15,7 @@ Reports content for moderation.
 }
 ```
 
-**Required**: `actorId`, `target` (a string), `object` (must be present β€” it carries `reason`).
+**Required**: `actorId`, `target` (a string), `object` (must be present -- it carries `reason`).
 
 ## Reason resolution
 
@@ -31,16 +31,16 @@ If the server has no `flagOptions` configured at all, every `Flag` call errors w
 
 Same actor + same target + same `reason.code` + an existing `status: "open"` Flag returns the existing flag (`duplicated: true`) rather than creating a new one.
 
-`targetType`/`targetActorId` are resolved server-side via a best-effort lookup β€” `null` for unknown/remote targets, which also sets `federate: true` as a signal that the remote host may need to be told.
+`targetType`/`targetActorId` are resolved server-side via a best-effort lookup -- `null` for unknown/remote targets, which also sets `federate: true` as a signal that the remote host may need to be told.
 
 ## Response
 
 `{ activity, flag: <Flag doc>, federate: bool }`.
 
 :::note[No `created`/`result`/`.federation` keys]
-Unlike every other handler, the `Flag` response has no `created` or `result` key, and no nested `.federation` object β€” just a top-level `flag` and `federate` boolean. `routes/outbox/post.js` reads `created.federate` at the top level of the `createActivity()` return to decide whether to enqueue delivery, which does line up correctly with this shape β€” but if you're writing generic response-handling code across activity types, don't assume every handler returns a `result`/`federation` pair; `Flag` is the odd one out.
+Unlike every other handler, the `Flag` response has no `created` or `result` key, and no nested `.federation` object -- just a top-level `flag` and `federate` boolean. `routes/outbox/post.js` reads `created.federate` at the top level of the `createActivity()` return to decide whether to enqueue delivery, which does line up correctly with this shape -- but if you're writing generic response-handling code across activity types, don't assume every handler returns a `result`/`federation` pair; `Flag` is the odd one out.
 :::
 
 ## Client mapping
 
-`flag({ targetId, reason, notes })` β†’ `{ type: "Flag", target: targetId, object: { reason, notes } }` β€” matches exactly.
+`flag({ targetId, reason, notes })` -> `{ type: "Flag", target: targetId, object: { reason, notes } }` -- matches exactly.

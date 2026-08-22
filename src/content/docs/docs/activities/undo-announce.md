@@ -5,11 +5,11 @@ sidebar:
   order: 9
 ---
 
-Both of these are inbound-only — no client SDK method sends either. They only ever arrive from a remote server's federation traffic.
+Both of these are inbound-only -- no client SDK method sends either. They only ever arrive from a remote server's federation traffic.
 
 ## Undo
 
-Handles **inbound federated** undo semantics — the generic ActivityPub-style undo. `activity.object` must be the full original activity being undone (an object, not just an ID):
+Handles **inbound federated** undo semantics -- the generic ActivityPub-style undo. `activity.object` must be the full original activity being undone (an object, not just an ID):
 
 ```json
 {
@@ -19,13 +19,13 @@ Handles **inbound federated** undo semantics — the generic ActivityPub-style u
 }
 ```
 
-**Required**: `actorId`, `object` (must be present/truthy — there's no shape check beyond that).
+**Required**: `actorId`, `object` (must be present/truthy -- there's no shape check beyond that).
 
-Only one case is implemented: `object.type === "React"` or `"Like"` — a remote actor removed their reaction. Deletes the remote actor's React record for the target and recomputes react counts via the same recompute logic [React](/docs/activities/react/) uses.
+Only one case is implemented: `object.type === "React"` or `"Like"` -- a remote actor removed their reaction. Deletes the remote actor's React record for the target and recomputes react counts via the same recompute logic [React](/docs/activities/react/) uses.
 
-Anything else — including `Undo{Follow}`, which a remote server could still send even though Kowloon no longer creates follow relationships that way — is acknowledged and logged, but no action is taken (`status: "ignored"`).
+Anything else -- including `Undo{Follow}`, which a remote server could still send even though Kowloon no longer creates follow relationships that way -- is acknowledged and logged, but no action is taken (`status: "ignored"`).
 
-**Response**: `{ activity, result: { status }, federation: { shouldFederate: false } }` always — `Undo` never re-federates.
+**Response**: `{ activity, result: { status }, federation: { shouldFederate: false } }` always -- `Undo` never re-federates.
 
 ## Announce
 

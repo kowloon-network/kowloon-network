@@ -1,12 +1,12 @@
 ---
 title: Pages
-description: /pages/* — always-public static content pages, including remote page hydration.
+description: /pages/* -- always-public static content pages, including remote page hydration.
 sidebar:
   order: 6
 ---
 
 ### `GET /pages`
-`makeCollection`. Always filtered to `to: "@public"` — non-public pages are never listed here. Query params: `?tag=`, `?serverId=`. Sorted `order asc, createdAt desc`.
+`makeCollection`. Always filtered to `to: "@public"` -- non-public pages are never listed here. Query params: `?tag=`, `?serverId=`. Sorted `order asc, createdAt desc`.
 
 ### `GET /pages/:id`
 Lookup by id **or** slug, `deletedAt: null`.

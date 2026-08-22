@@ -23,7 +23,7 @@ Approval behavior is driven by the Group's `rsvpPolicy`:
 | `serverOpen` | Local server members join freely; remote actors need approval. |
 | `serverApproval` | Only local server members may join at all, and even they need approval. |
 | `approvalOnly` | Everyone needs approval. |
-| `inviteOnly` | **Nobody can self-join** β€” errors with `"Join: this group is invite-only"`. Admins must use `Add` to add members directly. |
+| `inviteOnly` | **Nobody can self-join** -- errors with `"Join: this group is invite-only"`. Admins must use `Add` to add members directly. |
 
 The blocked-list check (against the group's `circles.blocked`) runs first, independent of policy.
 
@@ -31,9 +31,9 @@ The needs-approval path adds the actor to the group's `circles.pending` and noti
 
 If the target Group isn't found locally (a remote group), the handler federates the raw `Join` activity to the group's host domain, and speculatively tracks the remote group in the user's `circles.groups` circle client-side, without any local membership state.
 
-**Response**: `{ activity, created: { type: "Group", status }, result: same, federation }` β€” `status` is one of `pending` / `joined` / `already_joined` / `federated`.
+**Response**: `{ activity, created: { type: "Group", status }, result: same, federation }` -- `status` is one of `pending` / `joined` / `already_joined` / `federated`.
 
-**Client mapping**: `joinGroup({ groupId })` β†’ `{ type: "Join", objectType: "Group", target: groupId }`. `objectType` is sent but ignored β€” `Join` dispatch never uses it, since it only ever resolves `Group`.
+**Client mapping**: `joinGroup({ groupId })` -> `{ type: "Join", objectType: "Group", target: groupId }`. `objectType` is sent but ignored -- `Join` dispatch never uses it, since it only ever resolves `Group`.
 
 ## Leave
 
@@ -41,7 +41,7 @@ If the target Group isn't found locally (a remote group), the handler federates 
 { "type": "Leave", "target": "group:64f0...@kwln.org" }
 ```
 
-**Required**: `actorId`, `target`. Idempotent β€” pulls the actor from both `circles.members` and `circles.pending` in parallel, decrements `Group.memberCount` only if actually removed from `members`, and removes the group from the user's own `circles.groups`. If the group doc is remote (not found locally), returns `{ shouldFederate: true }` without mutating anything locally. Errors if the group is soft-deleted.
+**Required**: `actorId`, `target`. Idempotent -- pulls the actor from both `circles.members` and `circles.pending` in parallel, decrements `Group.memberCount` only if actually removed from `members`, and removes the group from the user's own `circles.groups`. If the group doc is remote (not found locally), returns `{ shouldFederate: true }` without mutating anything locally. Errors if the group is soft-deleted.
 
 **Response**: `{ activity, created: { group, left: bool, removedFrom: [] }, result: same, federation }`.
 
@@ -54,10 +54,10 @@ Adds or removes member(s) from a Circle. Both handlers share the same target-res
 ### Two target syntaxes
 
 ```json
-// "New" pattern β€” group-scoped, target circle optional (defaults to Members):
+// "New" pattern -- group-scoped, target circle optional (defaults to Members):
 { "type": "Add", "to": "group:64f0...@kwln.org", "object": "@bob@kwln.org" }
 
-// Legacy pattern β€” explicit circle:
+// Legacy pattern -- explicit circle:
 { "type": "Add", "target": "circle:64f0...@kwln.org", "object": "@bob@kwln.org" }
 
 // Batch add:
@@ -67,9 +67,9 @@ Adds or removes member(s) from a Circle. Both handlers share the same target-res
 { "type": "Add", "target": "circle:64f0...@kwln.org", "object": "@spammy.example" }
 ```
 
-`object` accepts a bare `@user@domain` string, a bare `@domain` server string, `{ actorId: "..." }`, or a full member/user object β€” resolved via `resolveActorToMember`, which for remote actors fetches their profile over HTTP and falls back to a minimally-constructed member if unreachable.
+`object` accepts a bare `@user@domain` string, a bare `@domain` server string, `{ actorId: "..." }`, or a full member/user object -- resolved via `resolveActorToMember`, which for remote actors fetches their profile over HTTP and falls back to a minimally-constructed member if unreachable.
 
-`Remove`'s `object` resolves to just an `{ id }` for the `$pull` β€” it accepts a bare string or `{ id }`/`{ actorId }`/a full object.
+`Remove`'s `object` resolves to just an `{ id }` for the `$pull` -- it accepts a bare string or `{ id }`/`{ actorId }`/a full object.
 
 ### Auth (by circle owner type)
 
@@ -79,21 +79,21 @@ Derived from `targetCircle.actorId`'s shape:
 - **Server-owned circle**: must be a local-server circle; admin-only if it's the admin circle, mod-only if the mod circle (`isServerAdmin`/`isServerMod`).
 - **Group-owned circle**: `isGroupAdmin(activity.actorId, targetCircle.actorId)`.
 
-### Add β€” side effects
+### Add -- side effects
 
 - Deduplicates against existing members before writing; `memberCount` is incremented by however many were actually new.
-- User circles with the default icon adopt the first added member's icon (a "playlist-style" icon inheritance) β€” never overwrites a creator-chosen icon, never touches System circles.
+- User circles with the default icon adopt the first added member's icon (a "playlist-style" icon inheritance) -- never overwrites a creator-chosen icon, never touches System circles.
 - Adding to a Group's Members circle removes the member from `circles.pending` if present (fires a `join_approved` notification), and adds the group to the new member's own `circles.groups`.
-- Newly-added **remote** members trigger an async best-effort content backfill (`pullFromRemote`, last 30 days) β€” skipped entirely if the target circle is the owner's Blocked or Muted circle, since pulling content from someone you're trying to keep out is pointless.
+- Newly-added **remote** members trigger an async best-effort content backfill (`pullFromRemote`, last 30 days) -- skipped entirely if the target circle is the owner's Blocked or Muted circle, since pulling content from someone you're trying to keep out is pointless.
 - User circles get their auto mosaic icon regenerated (fire-and-forget).
 
 :::note[Mongoose array gotcha, documented in-code]
-Federation recipients for remote members are carried via the returned `federation` object, deliberately *not* by overwriting `activity.to` with an array β€” `to` is a plain `String` on the Activity schema, and assigning an array of member IDs previously broke with a Mongoose cast error when adding two or more remote members at once.
+Federation recipients for remote members are carried via the returned `federation` object, deliberately *not* by overwriting `activity.to` with an array -- `to` is a plain `String` on the Activity schema, and assigning an array of member IDs previously broke with a Mongoose cast error when adding two or more remote members at once.
 :::
 
-### Remove β€” side effects
+### Remove -- side effects
 
-For Group Members-circle removals, if the member isn't found in the target circle, the handler also tries the Pending circle β€” this covers rejecting a pending join request via `Remove` rather than a dedicated reject flow. User-circle removal also triggers mosaic-icon regeneration. `Remove` **never federates** (`federate: false` unconditionally).
+For Group Members-circle removals, if the member isn't found in the target circle, the handler also tries the Pending circle -- this covers rejecting a pending join request via `Remove` rather than a dedicated reject flow. User-circle removal also triggers mosaic-icon regeneration. `Remove` **never federates** (`federate: false` unconditionally).
 
 ### Response
 
@@ -102,4 +102,4 @@ For Group Members-circle removals, if the member isn't found in the target circl
 
 ### Client mapping
 
-`addToCircle({ circleId, memberId | memberIds | members })` and `removeFromCircle({ circleId, memberId })` match the legacy pattern. `approveJoinRequest({ groupId, userId })` β†’ `{ type: "Add", to: groupId, object: userId }` matches the "new" group-scoped pattern (no `target`, defaults to Members circle). `rejectJoinRequest({ groupId, userId })` β†’ `{ type: "Remove", to: groupId, object: userId }` β€” same pattern, relying on `Remove`'s fallback to the Pending circle described above. `follow({ userId })` / `unfollow({ userId })` also go through these handlers β€” there's no separate Follow/Unfollow activity type at all; see [Architecture](/docs/architecture/#circles-replace-followfollowers).
+`addToCircle({ circleId, memberId | memberIds | members })` and `removeFromCircle({ circleId, memberId })` match the legacy pattern. `approveJoinRequest({ groupId, userId })` -> `{ type: "Add", to: groupId, object: userId }` matches the "new" group-scoped pattern (no `target`, defaults to Members circle). `rejectJoinRequest({ groupId, userId })` -> `{ type: "Remove", to: groupId, object: userId }` -- same pattern, relying on `Remove`'s fallback to the Pending circle described above. `follow({ userId })` / `unfollow({ userId })` also go through these handlers -- there's no separate Follow/Unfollow activity type at all; see [Architecture](/docs/architecture/#circles-replace-followfollowers).
