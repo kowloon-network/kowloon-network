@@ -74,12 +74,12 @@ await client.activities.react({ postId, emoji: '' })        // clear
 
 One reaction per user per target -- this is an upsert, not an append. A truthy `emoji` string sets or replaces your existing reaction; an empty/omitted `emoji` clears it. On clear, the client deliberately omits `object.type` from the payload -- if it were present, the server's fallback field-resolution (`object.react || object.emoji || object.type`) could misread it as the emoji value. The response is `{ ok, result: { status: 'reacted', react, bumped } }` -- there's no id, since this is an upsert, not a create.
 
-There is no `deleteReact()` method -- it used to exist, always failed server-side validation, and has been removed. `react({ postId, emoji: '' })` above is the only (and correct) way to clear a reaction.
+There is no `deleteReact()` method. `react({ postId, emoji: '' })` above is the only (and correct) way to clear a reaction.
 
 ## Circles
 
 ```js
-client.activities.createCircle({ name, summary, icon, to })
+client.activities.createCircle({ name, description, icon, to })
 client.activities.updateCircle({ circleId, updates })
 client.activities.deleteCircle({ circleId })
 

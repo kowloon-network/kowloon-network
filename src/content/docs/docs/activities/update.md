@@ -29,7 +29,7 @@ Anything not in the list below is silently stripped from the patch.
 | `Page` | `title`, `summary`, `source`, `body`, `slug`, `tags`, `to`, `canReply`, `canReact`, `image`, `attachments`, `href`, `parentId`, `order` |
 | `Bookmark` | `title`, `summary`, `source`, `body`, `type`, `tags`, `to`, `canReply`, `canReact`, `href`, `target`, `parentFolder`, `image` |
 | `Circle` | `name`, `summary`, `icon`, `to`, `canReply`, `canReact` |
-| `Group` | `name`, `description`, `icon`, `image`, `to`, `canReply`, `canReact`, `rsvpPolicy`, `location` |
+| `Group` | `name`, `summary`, `icon`, `image`, `to`, `canReply`, `canReact`, `rsvpPolicy`, `location` |
 | `React` | `emoji`, `name` |
 
 ## Auth

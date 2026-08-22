@@ -61,7 +61,7 @@ Post types: `Note`, `Article`, `Link`, `Media`, `Event`.
   "object": {
     "type": "Group",
     "name": "Book Club",
-    "description": "...",
+    "summary": "...",
     "rsvpPolicy": "serverOpen",
     "location": {}
   }
