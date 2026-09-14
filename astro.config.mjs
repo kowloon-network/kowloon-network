@@ -46,6 +46,10 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Running a Server',
+          items: [{ autogenerate: { directory: 'docs/admin' } }],
+        },
+        {
           label: 'Activities',
           items: [{ autogenerate: { directory: 'docs/activities' } }],
         },
