@@ -10,7 +10,7 @@ sidebar:
 ### `GET /config.json`
 Unauthenticated. Public runtime config for frontend bootstrapping:
 ```json
-{ "apiUrl": "...", "domain": "...", "siteTitle": "...", "registrationIsOpen": true }
+{ "apiUrl": "...", "domain": "...", "siteTitle": "..." }
 ```
 
 ## Health

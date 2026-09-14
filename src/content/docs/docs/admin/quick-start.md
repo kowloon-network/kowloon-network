@@ -31,17 +31,13 @@ Once you set a theme as the site default, that's what visitors who aren't logged
 
 There's no wrong answer here, and nothing you change is permanent. Try things.
 
-## Decide who can join
+## Bring people in
 
-**Settings → Registration** has a single switch: **Open Registration**.
+Every Kowloon server is invite-only -- there's no "let anyone sign up" switch to flip. That's deliberate: Kowloon works best as a lot of small, well-moderated communities rather than one undifferentiated open one, and an invite you control is easier to walk back than an open door.
 
-Leave it **off** and your server is invite-only. Nobody can create an account without a code from you. This is the right default for a community with a defined membership -- a group, a campaign, a set of people who know each other.
+That doesn't mean joining has to be slow or high-friction. **Invites** is where you create the link people use to get in, and it covers everything from "one specific person" to "post this link anywhere and let it fill up."
 
-Turn it **on** and anyone who finds your server can sign up. Easier to grow, but you'll get drive-by signups and you're accepting that you'll moderate strangers.
-
-### Inviting people
-
-With registration closed, **Invites** is how people get in. Create an invite and you can set:
+Create an invite and you can set:
 
 - **Max Redemptions** -- leave it blank for an unlimited link, or set it to 1 for a single person.
 - **Expires** -- an optional cut-off date.
@@ -116,7 +112,7 @@ The admin panel has more in it than you need on day one. **Posts**, **Circles** 
 1. Change your password, fill in your profile.
 2. Set the server name, description, icon and hero image.
 3. Pick your colours in Themes.
-4. Decide open or invite-only.
+4. Create your first invite -- one for a specific person, or an unlimited link if you're opening the doors wide.
 5. Write your community rules.
 6. Write an about page.
 7. Invite a handful of people you trust before opening the doors wider.

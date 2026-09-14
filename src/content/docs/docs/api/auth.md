@@ -87,7 +87,8 @@ Body:
 ```
 
 - `username` must match `/^[a-z0-9_]{2,32}$/` -- lowercase, digits, underscore only. Display name goes in `profile.name`, not `username`.
-- If `settings.registrationIsOpen === false`, `inviteCode` is required and validated:
+- `inviteCode` is always required (individual, or an admin-issued "open" invite -- optionally unlimited-redemption, for low-friction signup without a server-wide open toggle) and validated:
+  - `403` -- missing
   - `404` -- invalid code
   - `410` -- expired, already used, or exhausted
 - If the server has configured `rules`, every rule id must appear in `acknowledgedRules` (`400` otherwise); a timestamped acknowledgment snapshot is stored on the new user.
