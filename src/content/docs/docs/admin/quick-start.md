@@ -181,7 +181,13 @@ Two things in **Settings** are worth a look early, even if someone else set them
 
 **Settings -> Email** is how your server sends mail: invitations, password resets, and backup links. If invites aren't arriving, check here first. The **From address** needs to be on the same domain as your mail service, or messages quietly end up in spam.
 
-**Settings -> Maintenance** has **Create backup**, which emails you a download link valid for 48 hours. Take one before you make big changes. **Restore from backup** is there too, but it replaces *everything* on the server with the backup's contents, so treat it as a last resort.
+**Settings -> Maintenance** is where backups live. A backup can be of **the database** -- posts, accounts, settings, everything except uploaded photos and video -- or of **everything**, which adds every uploaded file. The database is small. Everything is what fills a disk.
+
+You can make one by hand at any time with **Back up the database** or **Back up everything**. Take one before you make big changes. You can also switch on **Automatic backups**: choose how often to back up the database and how often to back up everything (off, daily or weekly), how many of each to keep, and the hour they run. A sensible start is the database daily and everything weekly. The page shows how much space that will take before you save it. Older automatic backups are deleted as new ones succeed; ones you make by hand stay until you delete them. If an automatic backup fails, every admin gets an email.
+
+Every backup is listed with its size, a download button and a delete button. Backups are kept on the server itself, so they protect you from mistakes and crashes but not from losing the machine -- download the important ones and keep a copy somewhere else. If someone hosts your server for you, ask whether they back it up too.
+
+**Restore from a backup** is at the bottom. A full backup replaces the database and the uploaded files; a database backup replaces only the database. Treat it as a last resort.
 
 ## What you can safely ignore
 
@@ -191,12 +197,13 @@ The admin panel has more in it than you need on day one. **Posts** and **Groups*
 
 1. Change your password, fill in your profile.
 2. Add a second administrator.
-3. Set the server name, description, icon and hero image.
-4. Pick your colours in Themes.
-5. Write your community rules.
-6. Write an about page.
-7. Create your first invite -- an individual one for someone specific, or an open link if you're opening the doors wide.
-8. Invite a handful of people you trust before opening the doors wider.
+3. Decide on backups in **Settings -> Maintenance** -- at least the database daily.
+4. Set the server name, description, icon and hero image.
+5. Pick your colours in Themes.
+6. Write your community rules.
+7. Write an about page.
+8. Create your first invite -- an individual one for someone specific, or an open link if you're opening the doors wide.
+9. Invite a handful of people you trust before opening the doors wider.
 
 ## If something needs a person
 
