@@ -165,7 +165,7 @@ Each account has two very different ways out:
 - **Delete** closes the account and signs the person out. It can be restored from the **Deleted** filter until the retention period runs out.
 - **Ban** is permanent. It asks for a reason, which is shown on the Blocked list.
 
-Select several accounts at once and you can delete them together, or delete them permanently.
+Select several accounts at once and you can delete them together, or delete them permanently. A permanent delete removes the accounts and everything those people posted, straight away; unlike a ban, their usernames and email addresses are free to use again. Admin accounts can't be deleted this way -- take away their admin rights first.
 
 ### Banning a member
 
