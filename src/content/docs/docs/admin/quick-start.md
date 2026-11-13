@@ -17,7 +17,7 @@ The Dashboard puts what needs you first:
 
 - **Your community** -- members, posts today, new members this month and this year, and the rest of the server's vital signs at a glance.
 - **Moderation** -- the open reports, newest first. Tap one to deal with it, or follow the link to the full list.
-- **Create new** -- one tap to a new **Invite**, **Page** or **Bookmark**, the three things you'll make most often.
+- **Create new** -- one tap to a new **Invite**, **Page**, **Bookmark** or **Circle**, the things you'll make most often.
 - **Server health** -- disk, memory, database and uptime, folded away because you'll rarely need it. If something looks wrong there, tell whoever set the server up.
 
 ## First: change your password
