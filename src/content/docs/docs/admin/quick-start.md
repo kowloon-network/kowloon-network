@@ -89,6 +89,8 @@ A server where the only content is other people's posts feels like a waiting roo
 
 **Bookmarks** are links the whole server can see -- a shared reading list. **New Bookmark** makes either a link or a **Folder** to sort links into; each takes a summary and a **Visibility** setting, so you can keep some internal. As with Pages, drag them on the list to set their order.
 
+**Circles** aren't only for members. **Circles -> New Circle** makes one that belongs to the server rather than to you -- a "Local writers" or "Our sister servers" list that outlives any one person's account. Once you've named it, you're taken to its page, where you add and remove members the same way you would with your own circles. Any admin can manage it, and its **Visibility** is **Public** or **Server only**. Put it on Discover and newcomers get a ready-made list of people worth reading.
+
 **Discover** is the curated shelf new arrivals see, split into Media, Posts, Circles, Groups and Servers. To feature a post, circle or group, find it and choose **Add to Discovery**; other servers are added on the Discover page itself with **Add Server**. Each entry takes a short **Commentary** explaining *why* it's worth a newcomer's time, and that does a lot of work: "Weekly planning thread, start here" tells a new member more than a bare link ever will. You can rename, reorder or hide each shelf, and make it visible to everyone or to members only.
 
 ## Moderation
@@ -176,7 +178,7 @@ Two things in **Settings** are worth a look early, even if someone else set them
 
 ## What you can safely ignore
 
-The admin panel has more in it than you need on day one. **Posts**, **Circles** and **Groups** are administrative views of things members create -- useful when you're hunting for something specific, not places you need to tend. **Logs**, **Server health** on the Dashboard, and the **Media** and **Integrations** settings tabs are there for whoever looks after the server technically.
+The admin panel has more in it than you need on day one. **Posts** and **Groups**, and the members' circles listed under **Circles**, are administrative views of things members create -- useful when you're hunting for something specific, not places you need to tend. **Logs**, **Server health** on the Dashboard, and the **Media** and **Integrations** settings tabs are there for whoever looks after the server technically.
 
 ## A short first-day checklist
 
