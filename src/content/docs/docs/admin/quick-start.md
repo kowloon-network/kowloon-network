@@ -48,9 +48,16 @@ There's no wrong answer here, and nothing you change is permanent. Try things.
 
 Changes take effect immediately. Leave the **Domain** field alone -- changing it breaks your server's connections to every other server.
 
-:::note[About the Moderators picker]
-Just below Administrators there's a **Moderators** picker. Moderators can't open the admin panel yet, so for now anyone who needs to handle reports has to be an administrator.
-:::
+### Moderators
+
+Just below Administrators is a **Moderators** picker. Moderators share the day-to-day work without holding the keys to the whole server. They see a smaller admin panel, and they can:
+
+- handle **reports** -- ignore, remove, or delete permanently;
+- **block** people and servers elsewhere, and **defederate** a server -- every admin is notified when a moderator defederates a server or lifts it, with who did it and why;
+- **close** a member's account, or restore one;
+- add and edit **Pages**, **Bookmarks**, **Discover** and server **Circles**.
+
+They can't ban a member, delete content, see the banned-email lists, create accounts, or touch invites, themes or settings. They also can't act against an admin or another moderator -- that comes to you. Every new report notifies every admin and moderator, and everything a moderator does records who did it.
 
 ## Bring people in
 
