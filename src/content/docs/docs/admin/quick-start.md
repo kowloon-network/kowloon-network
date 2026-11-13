@@ -5,9 +5,20 @@ sidebar:
   order: 1
 ---
 
-Someone has set up a Kowloon server and made you its admin. You don't need to touch a terminal, edit a config file, or know what federation means to run it well. Everything in this guide happens in your browser.
+Someone has set up a Kowloon server and made you its admin. You don't need to touch a terminal, edit a config file, or know what federation means to run it well. Everything in this guide happens in your browser or the Kowloon app.
 
-Sign in at your server's address the way anyone else would, and you'll find an **Admin** link in your account menu. That's the whole control panel. Its menu is grouped into **Manage** (moderation and the things members create), **Community** (Discover, Pages, Bookmarks) and **System** (Invites, Themes, Settings, Logs).
+Sign in the way anyone else would. On the web, you'll find **Admin** in your account menu; in the app, it's **Server Admin**, at the bottom of the side menu. That's the whole control panel, and it's built to work on a phone -- most of what follows you can do standing in a queue.
+
+The panel opens on the **Dashboard**. Its menu is grouped into **Manage** (Moderation, and the things members create), **Community** (Discover, Pages, Bookmarks) and **System** (Invites, Themes, Settings, Logs).
+
+## The Dashboard
+
+The Dashboard puts what needs you first:
+
+- **Your community** -- members, posts today, new members this month and this year, and the rest of the server's vital signs at a glance.
+- **Moderation** -- the open reports, newest first. Tap one to deal with it, or follow the link to the full list.
+- **Create new** -- one tap to a new **Invite**, **Page** or **Bookmark**, the three things you'll make most often.
+- **Server health** -- disk, memory, database and uptime, folded away because you'll rarely need it. If something looks wrong there, tell whoever set the server up.
 
 ## First: change your password
 
@@ -35,25 +46,31 @@ There's no wrong answer here, and nothing you change is permanent. Try things.
 
 **Settings -> General** has an **Administrators** picker. Add at least one person you trust. If you're the only admin and you lose access, nobody can let you back in from the inside.
 
-The changes take effect immediately. Leave the **Domain** field alone -- changing it breaks your server's connections to every other server.
+Changes take effect immediately. Leave the **Domain** field alone -- changing it breaks your server's connections to every other server.
+
+:::note[About the Moderators picker]
+Just below Administrators there's a **Moderators** picker. Moderators can't open the admin panel yet, so for now anyone who needs to handle reports has to be an administrator.
+:::
 
 ## Bring people in
 
 Every Kowloon server is invite-only -- there's no "let anyone sign up" switch to flip. That's deliberate: Kowloon works best as a lot of small, well-moderated communities rather than one undifferentiated open one, and an invite you control is easier to walk back than an open door.
 
-That doesn't mean joining has to be slow. **Invites** is where you create the way in, and there are two kinds:
+That doesn't mean joining has to be slow. **Invites -> New Invite** (or **Create new -> Invite** on the Dashboard) makes a way in, and there are two kinds:
 
 - **Individual** -- for one specific person. You enter their email address and the server emails them the invitation.
 - **Open** -- a link anyone can use. Set **Max Redemptions** to cap how many people can join with it, or leave it blank for no limit.
 
-Both kinds take an optional **Expires** date and a **Note**, for your own records, so you remember who a link was for. Every invite also gives you a **QR code**, which is genuinely useful at an in-person meeting: put it on a slide or a printed card and people join by pointing a phone at it.
+Both kinds take an optional **Expires** date and a **Note**, for your own records, so you remember who a link was for.
+
+When you create an invite you're shown its link, ready to copy, and a **QR code**. The QR code is genuinely useful at an in-person meeting: put it on a slide or a printed card and people join by pointing a phone at it. You can get both back later from the **Invites** list.
 
 If an invite has done its job or ended up somewhere it shouldn't be, **Deactivate** it. Nobody new can join with it, and anyone who already joined keeps their account.
 
 :::caution[Individual invites need email]
 Individual invites arrive by email. If your server's email isn't set up (**Settings -> Email**), they silently never arrive.
 
-You can still onboard people without email. Use an open invite with **Max Redemptions** set to 1 and send them the link yourself. Or create their account under **Users -> New user**, leave the password field blank, and the server generates one and shows it to you **once**. Copy it, hand it over however you like, and tell them to change it in Profile & Settings.
+You can still onboard people without email. Use an open invite with **Max Redemptions** set to 1 and send them the link yourself. Or go to **Users -> New User**, leave the password blank, and the server generates one and shows it to you **once**. Copy it, hand it over however you like, and tell them to change it in Profile & Settings.
 :::
 
 ## Write your rules
@@ -68,49 +85,86 @@ Write them before you invite people, not after your first argument.
 
 A server where the only content is other people's posts feels like a waiting room. Three tools make it yours.
 
-**Pages** are documents that live on the server: an about page, a code of conduct, a schedule, a history of the group. Each has a title, a summary, the content itself, an optional **Featured Image**, a **Visibility** setting (anyone, or members only) and an **Order** that controls where it sits in the list. You can nest one page under another with **Parent Page** if you're building something with sections.
+**Pages** are documents that live on the server: an about page, a code of conduct, a schedule, a history of the group. **New Page** gives you a title, a summary, the content itself, an optional **Featured Image** and a **Visibility** setting (**Public**, or **Server only** for members). You can nest one page under another with **Parent Page** if you're building something with sections. To change the order pages are listed in, drag them by the handle on the **Pages** list.
 
-**Bookmarks** are links the whole server can see -- a shared reading list. Each has a URL, a summary, and a **Visibility** setting so you can keep some internal. You can sort them into **Folders**.
+**Bookmarks** are links the whole server can see -- a shared reading list. **New Bookmark** makes either a link or a **Folder** to sort links into; each takes a summary and a **Visibility** setting, so you can keep some internal. As with Pages, drag them on the list to set their order.
 
 **Discover** is the curated shelf new arrivals see, split into Media, Posts, Circles, Groups and Servers. To feature a post, circle or group, find it and choose **Add to Discovery**; other servers are added on the Discover page itself with **Add Server**. Each entry takes a short **Commentary** explaining *why* it's worth a newcomer's time, and that does a lot of work: "Weekly planning thread, start here" tells a new member more than a bare link ever will. You can rename, reorder or hide each shelf, and make it visible to everyone or to members only.
 
 ## Moderation
 
-**Moderation** has two tabs.
+**Moderation** has four tabs: **Reports**, **Blocked**, **Defederated** and **Emails**.
 
 ### Reports
 
-When a member reports something, it lands here. Each report shows what was flagged, who posted it, who reported it, and why. You can:
+When a member reports something, it lands here, and the newest open reports are also on your Dashboard. The list shows **Open**, **Resolved** or **Dismissed** reports. Each one shows what was reported, who posted it and who reported it; tap it to open the report.
 
-- **Ignore** it, if there's nothing to answer.
-- **Remove** the content. It disappears from the server, and both the person who reported it and the person who posted it are told.
-- **Hard Delete** it (under **More**), which removes it permanently, straight away.
-- **Block Creator** (also under **More**), which closes the poster's account and signs them out. The person who reported it is told; the blocked person isn't.
+The report page shows the reported item, the reason the member chose and any note they added, and under **What to do**:
+
+- **Ignore** -- nothing needs doing. The reporter is told no action was taken.
+- **Remove** -- take it down. The reporter and the author are both told.
+- **Block creator**, if the author is on another server -- everything they send your server is refused from now on, and they're added to the **Blocked** list. The reporter is told; the blocked person isn't.
+- **Ban author**, if the author is a member of *your* server -- see [Banning a member](#banning-a-member) below before you use it.
+- **Delete permanently** -- the item is gone for good, straight away.
 
 Members choose a reason when they report something. The defaults cover the usual ground -- spam, harassment, hate speech, threats, sexual content, child sexual exploitation, self-harm, misinformation, impersonation, extremism, graphic violence, illegal goods, and a free-text "other" -- and you can edit the list under **Settings -> Moderation -> Report categories**.
 
 :::caution[Removed things don't wait forever]
-Removed content and closed accounts are kept for a while so you can change your mind, then deleted for good. How long is set under **Settings -> Maintenance -> Deleted content retention** -- 30 days unless you change it.
+Removed content and deleted accounts are kept for a while so you can change your mind, then deleted for good. How long is set under **Settings -> Maintenance -> Deleted content retention** -- 30 days unless you change it. Bans and **Delete permanently** don't wait: they're immediate.
 :::
 
-### Servers
+### Blocked
 
-This is the one that matters when trouble comes from outside your server rather than inside it. Enter another server's address -- `example.org`, `@example.org` or `https://example.org` all work -- optionally note why, and choose:
+The **Blocked** list is the people and servers your server won't interact with. Type a person (`@name@example.org`) or a server (`example.org`), give a reason, and choose **Add to Blocked**. What happens depends on who you added:
 
-- **Block** stops replies and reactions from that server, but its posts still appear. Use this when a server's *behaviour* is the problem but your members legitimately follow people there. Nobody silently loses someone they were reading.
-- **Defederate** cuts the server off completely. Nothing comes in and nothing goes out. Use this for a server that is hostile, malicious, or dedicated to harassment.
+- **A person on another server** can't reply to or react to anything here, stops receiving your members' posts, and can't sign in here as a visitor.
+- **A whole server** keeps its posts flowing to members who follow people there, but its replies and reactions are refused. Use this when a server's *behaviour* is the problem but your members legitimately read people on it -- nobody silently loses someone they were reading.
+- **A member of your own server** is banned. That's a much bigger step; see below.
 
-Blocked servers are listed with an **Undo** next to each. Both actions are reversible, so if you're unsure, block first -- you can always escalate.
+Blocking decides who can interact with your server, not who your members can read. A member who wants to keep reading someone you've blocked still can, but that person can't reply to them or react to their posts.
+
+Each entry keeps its reason, which you can edit, and the date it was added. Remove an entry to undo the block.
+
+The list is **Private** (admins only) by default. You can make it **Public**, so your members -- or anyone -- can see who's blocked and why. If you do, the reasons become public too, so read them over first.
 
 :::tip[You can block a server you've never heard from]
-You don't have to wait to be attacked. If you know of a server that targets communities like yours, block it now. You don't need to have received anything from it first.
+You don't have to wait to be attacked. If you know of a server that targets communities like yours, block or defederate it now. You don't need to have received anything from it first.
 :::
+
+### Defederated
+
+**Defederated** is for servers only, and it's the stronger measure: a complete cut-off. Nothing comes in and nothing goes out. Your members can't follow anyone there, your server stops sending it anything and refuses everything it asks for, its people can't sign in here as visitors, and it disappears from search and Discover.
+
+Public posts are still public, though. Anyone can open a public page in a browser, and that includes people on a server you've defederated. Defederating stops the two servers talking to each other; it doesn't make your public posts private. Use it for spam, malware, and servers that exist to harass.
+
+Anything already stored from a defederated server is hidden rather than deleted, so if you change your mind and remove it from the list, it all comes back.
+
+A server is only ever on one of the two lists. Adding a blocked server to Defederated moves it there, and the other way round. If you're unsure which to use, block first; you can always escalate.
+
+### Emails
+
+The **Emails** tab holds banned **Addresses** and banned **Domains**. Neither can be used to sign up, to change an account's email, or to get an individual invite. Ban a domain for disposable-mail services and the like.
+
+When you ban a member, their address is added here automatically. Only admins can see these lists.
 
 ## Users
 
-**Users** lists everyone with an account on your server; people visiting from other servers aren't shown. You can search, create accounts with **New user**, and **Delete** an account, which closes it and signs the person out.
+**Users** lists everyone with an account on your server; people visiting from other servers aren't shown. You can search, switch between **Active**, **Deleted** and **All**, and create accounts with **New User**.
 
-A deleted account can be brought back from the **Deleted** filter until the retention period runs out. If you select several accounts at once you'll also be offered a permanent delete, which can't be undone.
+Each account has two very different ways out:
+
+- **Delete** closes the account and signs the person out. It can be restored from the **Deleted** filter until the retention period runs out.
+- **Ban** is permanent. It asks for a reason, which is shown on the Blocked list.
+
+Select several accounts at once and you can delete them together, or delete them permanently.
+
+### Banning a member
+
+A ban -- from **Users**, from **Ban author** on a report, or by adding a member to **Blocked** -- deletes the person's account and everything they posted, immediately and for good. It can't be undone, so Kowloon asks you to confirm it every time.
+
+Their username stays reserved, so nobody can register it and pass as them, and their email address goes on the banned list so they can't sign up again with it.
+
+Banning deletes rather than suspends on purpose: a suspended account can't delete its own data, and people have a right to have theirs removed. Keep bans for known bad actors. For anyone else, **Delete** does the job and can be taken back.
 
 ## Email and backups
 
@@ -122,9 +176,7 @@ Two things in **Settings** are worth a look early, even if someone else set them
 
 ## What you can safely ignore
 
-The admin panel has more in it than you need on day one. **Posts**, **Circles** and **Groups** are administrative views of things members create -- useful when you're hunting for something specific, not places you need to tend. **Logs**, the server figures on the **Dashboard**, and the **Media** and **Integrations** settings tabs are there for whoever looks after the server technically.
-
-The Dashboard's activity figures -- posts today, new members this week, invites used, open reports -- are worth a glance, though. Open reports especially.
+The admin panel has more in it than you need on day one. **Posts**, **Circles** and **Groups** are administrative views of things members create -- useful when you're hunting for something specific, not places you need to tend. **Logs**, **Server health** on the Dashboard, and the **Media** and **Integrations** settings tabs are there for whoever looks after the server technically.
 
 ## A short first-day checklist
 
