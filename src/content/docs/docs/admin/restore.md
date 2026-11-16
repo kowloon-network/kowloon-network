@@ -69,7 +69,7 @@ Follow the [installation guide](/docs/admin/install/), with three things to get 
 
 - **Install the version you were running, or a newer one.** Set `KOWLOON_VERSION` to it, for example `KOWLOON_VERSION=0.9.0`.
 - **Use the same domain** as before.
-- **For the admin username, use the username of an admin on the old server.** The password doesn't matter; the restore puts back the old one. (Choose a new username instead and Kowloon creates an extra admin account under it, which you'll then want to delete.)
+- **Any admin username and password will do.** This account is only for getting in to run the restore. The restore replaces every account, this one included, with the old server's.
 
 Leave the new server empty: don't sign anyone up or post anything. The restore replaces it all.
 
@@ -98,7 +98,7 @@ It shows you what's in the backup and asks you to type `YES`. It then stops Kowl
 
 1. Open `https://your-domain/health` and wait for `"status":"ok"`.
 2. Sign in with your **old** username and password. Your members do the same.
-3. Delete the `ADMIN_PASSWORD=` line from `.env` in the install folder and run `docker compose up -d`. (The [installation guide](/docs/admin/install/#5-sign-in) explains why.)
+3. Delete the `ADMIN_PASSWORD=` line from `.env` in the install folder and run `docker compose up -d`. It isn't needed any more, and it's a password in plain text.
 4. In **Settings -> Maintenance**, the backup list still shows the backups from the old server -- their records came back with the database -- but the archives themselves were on the old machine and won't download. Delete them, then make a fresh **Back up everything** and copy it somewhere safe.
 
 ## What a restore brings back, and what it doesn't

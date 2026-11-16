@@ -49,7 +49,7 @@ If Docker is installed but your user isn't allowed to use it, the installer stop
 
 ### Choosing a version
 
-By default you get the newest **stable** release. You can ask for a particular one by setting `KOWLOON_VERSION`:
+By default you get the newest **stable** release. (Until the first release is published, the installer says so and installs the latest development build instead.) You can ask for a particular one by setting `KOWLOON_VERSION`:
 
 ```bash
 # A specific release
@@ -126,7 +126,7 @@ Your settings live in the install folder:
 Keep a copy of `.env` somewhere safe and private: it holds your server's secrets, and you'll want it if you ever have to [rebuild the server](/docs/admin/restore/).
 
 :::caution[Tidy up the admin password]
-`.env` also holds the admin password you typed into the wizard, in plain text. It's only used to create your account the first time Kowloon starts. Once you've signed in, change your password in **Profile & Settings**, then delete the `ADMIN_PASSWORD=` line from `.env` and run `docker compose up -d`. While that line is there, Kowloon will recreate the admin account with that password if it ever finds it missing.
+`.env` also holds the admin password you typed into the wizard, in plain text. It's only used to create your account the very first time Kowloon starts, on an empty server. Once you've signed in, change your password in **Profile & Settings**, then delete the `ADMIN_PASSWORD=` line from `.env` and run `docker compose up -d`.
 :::
 
 ## Checking that it's healthy
