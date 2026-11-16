@@ -2,7 +2,7 @@
 title: Quick Start for Server Admins
 description: You've been handed a Kowloon server. Here's what you can do with it, in the order you'll probably want to do it.
 sidebar:
-  order: 1
+  order: 2
 ---
 
 Someone has set up a Kowloon server and made you its admin. You don't need to touch a terminal, edit a config file, or know what federation means to run it well. Everything in this guide happens in your browser or the Kowloon app.
