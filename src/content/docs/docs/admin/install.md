@@ -14,9 +14,13 @@ You don't need to know Docker, Node or MongoDB. The installer sets all of that u
 **A server.** A rented virtual server (a "VPS") from any hosting company is fine. It needs:
 
 - **Linux.** Ubuntu or Debian is easiest: on those, the installer installs Docker for you if it isn't there already. On any other Linux, [install Docker](https://docs.docker.com/get-docker/) yourself first, including the Compose plugin (`docker compose`, not the older `docker-compose`).
-- **An Intel or AMD (x86-64) processor.** Kowloon's images are only built for x86-64 at the moment, so ARM servers -- including Raspberry Pis and the ARM plans some hosts sell cheaply -- won't run it yet.
-- **Enough room.** We haven't set official minimums. Kowloon runs a database, file storage, the app and four small background workers side by side, so as a rough starting point choose at least 2 GB of memory and 20 GB of disk. Photos and video are what fill a disk, and so do backups (see [Recovering from a lost server](/docs/admin/restore/)), so allow for growth.
+- **A 64-bit processor and operating system.** Intel/AMD (x86-64) or ARM (arm64) both work, including the cheaper ARM plans many hosts sell. A 32-bit system won't run Kowloon, even on 64-bit hardware.
+- **Enough room.** Kowloon runs a database, file storage, the app and four small background workers side by side. **1 GB of memory** is enough for a small community; choose **2 GB** if your members will post a lot of video, because processing it takes extra memory for a moment. Start with **20 GB of disk**: photos, video and backups (see [Recovering from a lost server](/docs/admin/restore/)) are what fill it, so allow for growth.
 - **Open ports.** Ports **80** and **443** must be reachable from the internet; that's how people reach your site and how it gets its HTTPS certificate. During setup only, the wizard also uses port **2999** (or you can reach it through an SSH tunnel instead -- see below). Some hosts have a firewall in their control panel as well as on the machine; check both.
+
+:::note[Running it on a Raspberry Pi]
+A **Raspberry Pi 5** can run Kowloon: install the 64-bit Raspberry Pi OS, then follow this guide as normal. Older Pis, including the Pi 4, can't, because the database Kowloon uses needs a newer processor. Two tips: run from an SSD rather than a memory card, which wears out under a database; and if the Pi is at home, your router has to forward ports 80 and 443 to it, and your domain has to follow your home IP address if it changes. Pi support is new, so tell us how you get on.
+:::
 
 **A domain name.** People will reach your community at an address like `social.example.com`. It can be a whole domain or a subdomain of one you already own. Choose carefully: **the domain is your server's identity and can't be changed later.** Every account and post is named after it, and other Kowloon servers know you by it.
 
